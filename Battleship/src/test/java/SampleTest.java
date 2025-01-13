@@ -7,6 +7,7 @@ class SampleTest {
 
     @Test
     @DisplayName("Testing JUnit")
-    void main() {
+    void failingTest() {
+        fail("a failing test");
     }
 }
