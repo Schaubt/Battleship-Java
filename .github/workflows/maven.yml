@@ -29,5 +29,3 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file ./Battleship/pom.xml
-    - name: Tests via JUnit
-      run: mvn test --file ./Battleship/pom.xml
