@@ -85,7 +85,7 @@ class BoardTest {
         char mockOrientation = 'h'; //vertical
 
         HashMap<String, Integer> expected = new HashMap<>();
-        expected.put("row", mockRow+mockSize-1);
+        expected.put("row", mockRow);
         expected.put("col", mockCol);
 
         HashMap[] actualCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
@@ -98,8 +98,8 @@ class BoardTest {
         char mockOrientation = 'h'; //vertical
 
         HashMap<String, Integer> expected = new HashMap<>();
-        expected.put("row", mockRow+mockSize-1);
-        expected.put("col", mockCol);
+        expected.put("row", mockRow);
+        expected.put("col", mockCol+mockSize-1);
 
         HashMap[] actualCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
         HashMap actual = actualCoordinates[mockSize-1];
@@ -111,7 +111,7 @@ class BoardTest {
         char mockOrientation = 'v'; //vertical
 
         HashMap<String, Integer> expected = new HashMap<>();
-        expected.put("row", mockRow+mockSize-1);
+        expected.put("row", mockRow);
         expected.put("col", mockCol);
 
         HashMap[] actualCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
