@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -81,6 +82,7 @@ class BoardTest {
     }
 
     @Test
+    @DisplayName("A horizontally placed ship's last coordinate is offset by 0 columns.")
     public void testCalcShipPlacementHorizontalFirstCoordinate(){
         char mockOrientation = 'h'; //vertical
 
@@ -94,6 +96,7 @@ class BoardTest {
         assertEquals(expected,actual);
     }
     @Test
+    @DisplayName("A horizontally placed ship's last coordinate is offset by size-1 columns from it's first.")
     public void testCalcShipPlacementHorizontalLastCoordinate(){
         char mockOrientation = 'h'; //vertical
 
@@ -107,6 +110,7 @@ class BoardTest {
         assertEquals(expected,actual);
     }
     @Test
+    @DisplayName("A vertically placed ship's last coordinate is offset by 0 rows")
     public void testCalcShipPlacementVerticalFirstCoordinate(){
         char mockOrientation = 'v'; //vertical
 
@@ -120,6 +124,7 @@ class BoardTest {
         assertEquals(expected,actual);
     }
     @Test
+    @DisplayName("A vertically placed ship's last coordinate is offset by size-1 rows from its first.")
     public void testCalcShipPlacementVerticalLastCoordinate(){
         char mockOrientation = 'v'; //vertical
 
@@ -133,6 +138,7 @@ class BoardTest {
         assertEquals(expected,actual);
     }
     @Test
+    @DisplayName("A ship's first coordinate on the board returns it's name.")
     public void testPlaceShipFirstIndex(){
         MockBoard.placeShip(MockShip);
 
@@ -142,6 +148,7 @@ class BoardTest {
         assertEquals(expected, actual);
     }
     @Test
+    @DisplayName("A ship's last coordinate on the board returns it's name.")
     public void testPlaceShipLastIndex(){
         MockBoard.placeShip(MockShip);
 
@@ -151,6 +158,7 @@ class BoardTest {
         assertEquals(expected, actual);
     }
     @Test
+    @DisplayName("Coordinate directly below a ship's row range returns null.")
     public void testPlaceShipOutOfBoundsBelowRow(){
         MockBoard.placeShip(MockShip);
 
@@ -159,6 +167,7 @@ class BoardTest {
         assertNull(actual);
     }
     @Test
+    @DisplayName("Coordinate directly above a ship's row range returns null.")
     public void testPlaceShipOutOfBoundsAboveRow(){
         MockBoard.placeShip(MockShip);
 
@@ -167,6 +176,7 @@ class BoardTest {
         assertNull(actual);
     }
     @Test
+    @DisplayName("Coordinate directly to the right of a ship's column range returns null.")
     public void testPlaceShipOutOfBoundsRightColumn(){
         MockBoard.placeShip(MockShip);
 
@@ -176,6 +186,7 @@ class BoardTest {
     }
 
     @Test
+    @DisplayName("Coordinate directly to the left of a ship's column range returns null.")
     public void testPlaceShipOutOfBoundsLeftColumn(){
         MockBoard.placeShip(MockShip);
 
