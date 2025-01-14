@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Board {
     String[][] grid;
     public Board(){
@@ -7,7 +9,6 @@ public class Board {
         this.grid[row][col] = value;
     }
     public void display(){
-        int numOfRows = this.grid.length;
         int numOfCols = this.grid[0].length;
         for (String[] strings : this.grid) {
             for (int j = 0; j < numOfCols; j++) {
@@ -22,9 +23,28 @@ public class Board {
         }
     }
     public void markHitOrMiss(int row, int col){
-
     }
-    public void placeShip(){
+    public HashMap[] calcShipPlacementCoordinates(int row, int col, int size, char orientation){
+        HashMap[] array = new HashMap[size];
+        int colTemp = col;
+        int rowTemp = row;
+            for(int i=0;i<size;i++)
+            {
+                HashMap<String, Integer> coord = new HashMap<>();
+                coord.put("row", rowTemp);
+                coord.put("col", colTemp);
+                array[i] = coord;
+                if(orientation == 'h') {
+                    colTemp++;
+                }
+                else if(orientation == 'v')
+                {
+                    rowTemp++;
+                }
+            }
+            return array;
+    }
+    public void placeShip(Ship ship, int rowNum, int colNum, String orientation){
 
     }
 }
