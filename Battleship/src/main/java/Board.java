@@ -44,7 +44,5 @@ public class Board {
             }
             return array;
     }
-    public void placeShip(Ship ship, int rowNum, int colNum, String orientation){
-
-    }
+    //public void placeShip(Ship ship, int rowNum, int colNum, String orientation){}
 }
