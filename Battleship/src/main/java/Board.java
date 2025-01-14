@@ -22,8 +22,7 @@ public class Board {
             System.out.println();
         }
     }
-    public void markHitOrMiss(int row, int col){
-    }
+    //public void markHitOrMiss(int row, int col){}
     public HashMap[] calcShipPlacementCoordinates(int row, int col, int size, char orientation){
         HashMap[] array = new HashMap[size];
         int colTemp = col;
@@ -44,5 +43,13 @@ public class Board {
             }
             return array;
     }
-    //public void placeShip(Ship ship, int rowNum, int colNum, String orientation){}
+    public void placeShip(Ship ship){
+        int currRow;
+        int currCol;
+        for(int i =0; i < ship.occupiedCoordinates.length; i++){
+            currRow = (int) ship.occupiedCoordinates[i].get("row");
+            currCol = (int) ship.occupiedCoordinates[i].get("col");
+            this.grid[currRow][currCol] = ship.name;
+        }
+    }
 }

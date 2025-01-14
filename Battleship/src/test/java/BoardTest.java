@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -7,12 +8,23 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
+    Board MockBoard = new Board();
+    String mockName = "Carrier";
+    int mockSize = 5;
+    int mockRow = 1;
+    int mockCol = 1;
+    char mockOrientation = 'h';
+    HashMap[] mockOccupiedCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow,mockCol,mockSize, mockOrientation);
+    Ship MockShip = new Ship(mockName, mockSize, mockOccupiedCoordinates);
+    @BeforeEach
+    public void init(){
+        MockBoard = new Board();
+    }
     @Test
     public void testDisplay() {
-        Board board = new Board();
-        board.updateCell(0, 0, "Hit");
-        board.updateCell(0, 1, "Miss");
-        board.updateCell(9, 9, "Ship");
+        MockBoard.updateCell(0, 0, "Hit");
+        MockBoard.updateCell(0, 1, "Miss");
+        MockBoard.updateCell(9, 9, "Ship");
 
         // Expected display output
         String expectedOutput = """
@@ -31,7 +43,7 @@ class BoardTest {
         // Act: Capture the output of the display() method
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        board.display();
+        MockBoard.display();
         System.setOut(System.out); // Reset standard output
         String normalizedExpected = expectedOutput.replace("\r\n", "\n").stripTrailing();
         String normalizedActual = outputStream.toString().replace("\r\n", "\n").stripTrailing();
@@ -41,7 +53,6 @@ class BoardTest {
     }
     @Test
     public void testEmptyDisplay() {
-        Board board = new Board();
 
         // Expected display output
         String expectedOutput = """
@@ -60,7 +71,7 @@ class BoardTest {
         // Act: Capture the output of the display() method
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        board.display();
+        MockBoard.display();
         System.setOut(System.out); // Reset standard output
         String normalizedExpected = expectedOutput.replace("\r\n", "\n").stripTrailing();
         String normalizedActual = outputStream.toString().replace("\r\n", "\n").stripTrailing();
@@ -70,65 +81,106 @@ class BoardTest {
     }
 
     @Test
-    public void testCalcShipPlacementCoordinatesHorizontal(){
-        Board board = new Board();
-        int mockRow = 5;
-        int mockCol = 2;
-        int mockSize = 3;
-        char mockOrientation = 'h'; //horizontal
+    public void testCalcShipPlacementHorizontalFirstCoordinate(){
+        char mockOrientation = 'h'; //vertical
 
-        //expected
-        HashMap[] expected = new HashMap[2];
-        HashMap<String, Integer> mockMap1 = new HashMap<>();
-        mockMap1.put("row", mockRow);
-        mockMap1.put("col", mockCol);
-        expected[0] = mockMap1;
+        HashMap<String, Integer> expected = new HashMap<>();
+        expected.put("row", mockRow+mockSize-1);
+        expected.put("col", mockCol);
 
-        HashMap<String, Integer> mockMap2 = new HashMap<>();
-        mockMap2.put("row", mockRow);
-        mockMap2.put("col", mockCol+mockSize-1);
-        expected[1] = mockMap2;
+        HashMap[] actualCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
+        HashMap actual = actualCoordinates[0];
 
-        //actual
-        HashMap[] actual = board.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
-
-        //test first coordinate in array
-        assertEquals(expected[0].get("row"),actual[0].get("row"));
-        assertEquals(expected[0].get("col"),actual[0].get("col"));
-
-        //test last coordinate in array
-        assertEquals(expected[1].get("row"),actual[mockSize-1].get("row"));
-        assertEquals(expected[1].get("col"),actual[mockSize-1].get("col"));
+        assertEquals(expected,actual);
     }
     @Test
-    public void testCalcShipPlacementCoordinatesVertical(){
-        Board board = new Board();
-        int mockRow = 5;
-        int mockCol = 2;
-        int mockSize = 3;
+    public void testCalcShipPlacementHorizontalLastCoordinate(){
+        char mockOrientation = 'h'; //vertical
+
+        HashMap<String, Integer> expected = new HashMap<>();
+        expected.put("row", mockRow+mockSize-1);
+        expected.put("col", mockCol);
+
+        HashMap[] actualCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
+        HashMap actual = actualCoordinates[mockSize-1];
+
+        assertEquals(expected,actual);
+    }
+    @Test
+    public void testCalcShipPlacementVerticalFirstCoordinate(){
         char mockOrientation = 'v'; //vertical
 
-        //expected
-        HashMap[] expected = new HashMap[2];
-        HashMap<String, Integer> mockMap1 = new HashMap<>();
-        mockMap1.put("row", mockRow);
-        mockMap1.put("col", mockCol);
-        expected[0] = mockMap1;
+        HashMap<String, Integer> expected = new HashMap<>();
+        expected.put("row", mockRow+mockSize-1);
+        expected.put("col", mockCol);
 
-        HashMap<String, Integer> mockMap2 = new HashMap<>();
-        mockMap2.put("row", mockRow+mockSize-1);
-        mockMap2.put("col", mockCol);
-        expected[1] = mockMap2;
+        HashMap[] actualCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
+        HashMap actual = actualCoordinates[0];
 
-        //actual
-        HashMap[] actual = board.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
+        assertEquals(expected,actual);
+    }
+    @Test
+    public void testCalcShipPlacementVerticalLastCoordinate(){
+        char mockOrientation = 'v'; //vertical
 
-        //test first coordinate in array
-        assertEquals(expected[0].get("row"),actual[0].get("row"));
-        assertEquals(expected[0].get("col"),actual[0].get("col"));
+        HashMap<String, Integer> expected = new HashMap<>();
+        expected.put("row", mockRow+mockSize-1);
+        expected.put("col", mockCol);
 
-        //test last coordinate in array
-        assertEquals(expected[1].get("row"),actual[mockSize-1].get("row"));
-        assertEquals(expected[1].get("col"),actual[mockSize-1].get("col"));
+        HashMap[] actualCoordinates = MockBoard.calcShipPlacementCoordinates(mockRow, mockCol, mockSize, mockOrientation);
+        HashMap actual = actualCoordinates[mockSize-1];
+
+        assertEquals(expected,actual);
+    }
+    @Test
+    public void testPlaceShipFirstIndex(){
+        MockBoard.placeShip(MockShip);
+
+        String expected = mockName;
+        String actual = MockBoard.grid[(int)mockOccupiedCoordinates[0].get("row")][(int)mockOccupiedCoordinates[0].get("col")];
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void testPlaceShipLastIndex(){
+        MockBoard.placeShip(MockShip);
+
+        String expected = mockName;
+        String actual = MockBoard.grid[(int)mockOccupiedCoordinates[mockSize-1].get("row")][(int)mockOccupiedCoordinates[mockSize-1].get("col")];
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void testPlaceShipOutOfBoundsBelowRow(){
+        MockBoard.placeShip(MockShip);
+
+        String actual = MockBoard.grid[(int)mockOccupiedCoordinates[0].get("row")+1][(int)mockOccupiedCoordinates[0].get("col")];
+
+        assertNull(actual);
+    }
+    @Test
+    public void testPlaceShipOutOfBoundsAboveRow(){
+        MockBoard.placeShip(MockShip);
+
+        String actual = MockBoard.grid[(int)mockOccupiedCoordinates[0].get("row")-1][(int)mockOccupiedCoordinates[0].get("col")];
+
+        assertNull(actual);
+    }
+    @Test
+    public void testPlaceShipOutOfBoundsRightColumn(){
+        MockBoard.placeShip(MockShip);
+
+        String actual = MockBoard.grid[(int)mockOccupiedCoordinates[4].get("row")][(int)mockOccupiedCoordinates[4].get("col")+1];
+
+        assertNull(actual);
+    }
+
+    @Test
+    public void testPlaceShipOutOfBoundsLeftColumn(){
+        MockBoard.placeShip(MockShip);
+
+        String actual = MockBoard.grid[(int)mockOccupiedCoordinates[0].get("row")][(int)mockOccupiedCoordinates[0].get("col")-1];
+
+        assertNull(actual);
     }
 }
