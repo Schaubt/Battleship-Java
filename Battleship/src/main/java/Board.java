@@ -52,4 +52,15 @@ public class Board {
             this.grid[currRow][currCol] = ship.name;
         }
     }
+    public boolean coordOutOfBounds(int row, int col){
+        if (row < 0 || col <0) {
+            return false;
+        }
+        else if (row>this.grid.length || col>this.grid[0].length){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 }
