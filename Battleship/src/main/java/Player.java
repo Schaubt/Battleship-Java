@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Player {
     private static int nextId = 0;
@@ -7,7 +9,6 @@ public abstract class Player {
     Board topBoard;
     Board bottomBoard;
     String[] attackHistory;
-    String type;
     boolean isComputer;
 
     public Player(boolean isComputer){
@@ -19,7 +20,7 @@ public abstract class Player {
         this.isComputer = isComputer;
     }
     public void addShip(String name, int size, int row, int col, char orientation){
-        HashMap[] coordinates = this.bottomBoard.calcShipPlacementCoordinates(row, col, size, orientation);
+        List<Map<String, Integer>> coordinates = this.bottomBoard.calcShipPlacementCoordinates(row, col, size, orientation);
         Ship ship = new Ship(name, size, coordinates);
         this.bottomBoard.placeShip(ship);
         this.shipsAlive.put(ship.name, ship);

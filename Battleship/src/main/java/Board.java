@@ -1,4 +1,7 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Board {
     String[][] grid;
@@ -23,16 +26,17 @@ public class Board {
         }
     }
     //public void markHitOrMiss(int row, int col){}
-    public HashMap[] calcShipPlacementCoordinates(int row, int col, int size, char orientation){
-        HashMap[] array = new HashMap[size];
+    public List<Map<String, Integer>> calcShipPlacementCoordinates(int row, int col, int size, char orientation){
+        List<Map<String, Integer>> coordinates = new ArrayList<>();
         int colTemp = col;
         int rowTemp = row;
             for(int i=0;i<size;i++)
             {
-                HashMap<String, Integer> coord = new HashMap<>();
+                Map<String, Integer> coord = new HashMap<>();
                 coord.put("row", rowTemp);
                 coord.put("col", colTemp);
-                array[i] = coord;
+                coordinates.add(coord);
+
                 if(orientation == 'h') {
                     colTemp++;
                 }
@@ -41,26 +45,32 @@ public class Board {
                     rowTemp++;
                 }
             }
-            return array;
+            return coordinates;
     }
     public void placeShip(Ship ship){
         int currRow;
         int currCol;
-        for(int i =0; i < ship.occupiedCoordinates.length; i++){
-            currRow = (int) ship.occupiedCoordinates[i].get("row");
-            currCol = (int) ship.occupiedCoordinates[i].get("col");
+        for(int i =0; i < ship.occupiedCoordinates.size(); i++){
+            currRow = ship.occupiedCoordinates.get(i).get("row");
+            currCol = ship.occupiedCoordinates.get(i).get("col");
             this.grid[currRow][currCol] = ship.name;
         }
     }
-    public boolean coordOutOfBounds(int row, int col){
+    public boolean coordInBounds(int row, int col){
         if (row < 0 || col <0) {
             return false;
         }
         else if (row>this.grid.length || col>this.grid[0].length){
             return false;
         }
-        else{
-            return true;
-        }
+        return true;
+    }
+    public boolean coordIsAvailable(int row, int col){
+        return this.grid[row][col] == null;
+    }
+    public boolean shipOverflowsOffBoard(List<Map<String, Integer>> coords){
+        int row = coords.get(coords.size()-1).get("row");
+        int col = coords.get(coords.size()-1).get("col");
+        return !coordInBounds(row, col);
     }
 }

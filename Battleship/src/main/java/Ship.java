@@ -1,12 +1,13 @@
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Ship {
     public String name;
     int size;
     int health;
-    HashMap[] occupiedCoordinates;
+    List<Map<String, Integer>> occupiedCoordinates;
 
-    public Ship(String name, int size, HashMap[] coordinates){
+    public Ship(String name, int size, List<Map<String, Integer>> coordinates){
         this.name = name;
         this.size = size;
         this.health = size;

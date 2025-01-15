@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +12,7 @@ class ShipTest {
     int mockRow = 1;
     int mockCol = 1;
     char mockOrientation = 'h';
-    HashMap[] mockOccupiedCoordinates = Board.calcShipPlacementCoordinates(mockRow,mockCol,mockSize, mockOrientation);
+    List<Map<String, Integer>> mockOccupiedCoordinates = Board.calcShipPlacementCoordinates(mockRow,mockCol,mockSize, mockOrientation);
 
     @Test
     public void testShipConstructorName(){
@@ -32,9 +33,10 @@ class ShipTest {
     @Test
     public void testShipConstructorCoordinates(){
         Ship shipActual = new Ship(mockName, mockSize, mockOccupiedCoordinates);
-        HashMap[] expected = mockOccupiedCoordinates;
-        HashMap[] actual = shipActual.occupiedCoordinates;
+        List<Map<String, Integer>> expected = mockOccupiedCoordinates;
+        List<Map<String, Integer>> actual = shipActual.occupiedCoordinates;
 
         assertEquals(expected, actual);
     }
+
 }
