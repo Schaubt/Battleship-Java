@@ -197,4 +197,20 @@ class BoardTest {
         boolean actual = MockBoard.shipOverflowsOffBoard(mockCoordinates);
         assertFalse(actual);
     }
+    @Test
+    public void display_grid_should_contain_ship_symbol_at_first_ship_coordinate(){
+        char expected = '@';
+        MockBoard.placeShip(MockShip);
+        MockBoard.generateDisplayGrid(); // function in question
+        char actual = MockBoard.displayGrid[MockShip.occupiedCoordinates.get(0).get("row")][MockShip.occupiedCoordinates.get(0).get("col")];
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void display_grid_should_contain_ship_symbol_at_last_ship_coordinate(){
+        char expected = '@';
+        MockBoard.placeShip(MockShip);
+        MockBoard.generateDisplayGrid(); //function in question
+        char actual = MockBoard.displayGrid[MockShip.occupiedCoordinates.get(mockSize-1).get("row")][MockShip.occupiedCoordinates.get(mockSize-1).get("col")];
+        assertEquals(expected, actual);
+    }
 }

@@ -13,5 +13,13 @@ public class Ship {
         this.health = size;
         this.occupiedCoordinates = coordinates;
     }
+    public Ship(String name, int size){
+        this.name = name;
+        this.size = size;
+        this.health = size;
+    }
+    public void setCoordinates(List<Map<String, Integer>> coordinates){
+        this.occupiedCoordinates = coordinates;
+    }
     //public void hit() {}
 }

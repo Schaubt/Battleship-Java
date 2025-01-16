@@ -5,7 +5,7 @@ import java.util.Map;
 public abstract class Player {
     private static int nextId = 0;
     private int id;
-    HashMap<String, Ship> shipsAlive;
+    Map<String, Ship> shipsAlive;
     Board topBoard;
     Board bottomBoard;
     String[] attackHistory;
@@ -19,10 +19,11 @@ public abstract class Player {
         this.attackHistory = new String[10];
         this.isComputer = isComputer;
     }
-    public void addShip(String name, int size, int row, int col, char orientation){
-        List<Map<String, Integer>> coordinates = this.bottomBoard.calcShipPlacementCoordinates(row, col, size, orientation);
-        Ship ship = new Ship(name, size, coordinates);
+    public void placeShip(Ship ship ){
         this.bottomBoard.placeShip(ship);
+        this.shipsAlive.put(ship.name, ship);
+    }
+    public void setAliveShips(Ship ship){
         this.shipsAlive.put(ship.name, ship);
     }
     //public void removeShip(int row, int col, String orientation){}

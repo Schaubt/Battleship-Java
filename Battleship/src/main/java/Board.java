@@ -5,11 +5,30 @@ import java.util.Map;
 
 public class Board {
     String[][] grid;
+    char[][] displayGrid;
     public Board(){
         this.grid = new String[10][10];
+        this.displayGrid = new char[10][10];
     }
     public void updateCell(int row, int col, String value){
         this.grid[row][col] = value;
+    }
+    public void updateDisplayCell(int row, int col, char value){
+        this.displayGrid[row][col] = value;
+    }
+    public void generateDisplayGrid() {
+        int numOfCols = this.grid[0].length;
+        int numOfRows = this.grid.length;
+        for (int i = 0; i < numOfRows; i++) {
+            for (int j = 0; j < numOfCols; j++) {
+                switch (this.grid[i][j]) {
+                    case null -> this.displayGrid[i][j] = 'O';
+                    case "Hit" -> this.displayGrid[i][j] = 'X';
+                    case "Miss" -> this.displayGrid[i][j] = 'M';
+                    default -> this.displayGrid[i][j] = '@';
+                }
+            }
+        }
     }
     public void display(){
         int numOfCols = this.grid[0].length;
@@ -48,11 +67,9 @@ public class Board {
             return coordinates;
     }
     public void placeShip(Ship ship){
-        int currRow;
-        int currCol;
         for(int i =0; i < ship.occupiedCoordinates.size(); i++){
-            currRow = ship.occupiedCoordinates.get(i).get("row");
-            currCol = ship.occupiedCoordinates.get(i).get("col");
+            int currRow = ship.occupiedCoordinates.get(i).get("row");
+            int currCol = ship.occupiedCoordinates.get(i).get("col");
             this.grid[currRow][currCol] = ship.name;
         }
     }
