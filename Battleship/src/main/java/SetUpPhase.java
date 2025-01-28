@@ -31,9 +31,14 @@ public class SetUpPhase extends Phase{
                 int row = userInput.getRowNum();
                 int col = userInput.getColNum();
                 char orientation = userInput.getOrientation();
-                List<Map<String, Integer>> shipCoordinates = player.bottomBoard.calcShipPlacementCoordinates(row, col, 5, orientation);
-                battleship.setCoordinates(shipCoordinates);
-                player.placeShip(ships[i]);
+                List<Map<String, Integer>> shipCoordinates = player.bottomBoard.calcShipPlacementCoordinates(row, col, ships[i].size, orientation);
+                if (player.bottomBoard.validateShipPlacement(shipCoordinates)) {
+                    ships[i].setCoordinates(shipCoordinates);
+                    player.placeShip(ships[i]);
+                }
+                else {
+                    i--;
+                }
             }
         }
     }
