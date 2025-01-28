@@ -1,7 +1,9 @@
 import java.io.InputStream;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
-public class SetUpPhase extends Phase{
+public class SetUpPhase extends Phase {
     final String CARRIER_NAME = "Carrier";
     final String BATTLESHIP_NAME = "Battleship";
     final String DESTROYER_NAME = "Destroyer";
@@ -13,10 +15,11 @@ public class SetUpPhase extends Phase{
     final int SUBMARINE_SIZE = 3;
     final int PATROL_BOAT_SIZE = 2;
 
-    public SetUpPhase(){
+    public SetUpPhase() {
         super();
     }
-    public void execute(Player player){
+
+    public void execute(Player player) {
         Ship carrier = new Ship(CARRIER_NAME, CARRIER_SIZE);
         Ship battleship = new Ship(BATTLESHIP_NAME, BATTLESHIP_SIZE);
         Ship destroyer = new Ship(DESTROYER_NAME, DESTROYER_SIZE);
@@ -25,7 +28,7 @@ public class SetUpPhase extends Phase{
         Ship[] ships = {carrier, battleship, destroyer, submarine, patrolBoat};
 
         if (!player.isComputer) {
-            for (int i=0 ; i<ships.length ; i++) {
+            for (int i = 0; i < ships.length; i++) {
                 System.out.println("Enter row (A-Z), column, and orientation (h or v");
                 UserInput userInput = this.getUserInput(System.in);
                 int row = userInput.getRowNum();
@@ -35,14 +38,28 @@ public class SetUpPhase extends Phase{
                 if (player.bottomBoard.validateShipPlacement(shipCoordinates)) {
                     ships[i].setCoordinates(shipCoordinates);
                     player.placeShip(ships[i]);
+                } else {
+                    i--;
                 }
-                else {
+            }
+        } else {
+            for (int i = 0; i < ships.length; i++) {
+                int row = (int) (Math.random() * 10);
+                int col = (int) (Math.random() * 10);
+                char orientation = Math.random() < 0.5 ? 'v' : 'h';
+                List<Map<String, Integer>> shipCoordinates = player.bottomBoard.calcShipPlacementCoordinates(row, col, ships[i].size, orientation);
+                System.out.println(row + ' ' + col + ' ' + orientation + ' ' + ships[i].size);
+                if (player.bottomBoard.validateShipPlacement(shipCoordinates)) {
+                    ships[i].setCoordinates(shipCoordinates);
+                    player.placeShip(ships[i]);
+                } else {
                     i--;
                 }
             }
         }
     }
-    public UserInput getUserInput(InputStream in){
+
+    public UserInput getUserInput(InputStream in) {
         Scanner scanner = new Scanner(in);
         scanner.useDelimiter(",\\s*");
         int rowNum = scanner.nextInt();
