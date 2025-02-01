@@ -39,6 +39,7 @@ public class SetUpPhase extends Phase {
                     ships[i].setCoordinates(shipCoordinates);
                     player.placeShip(ships[i]);
                 } else {
+                    System.out.println("Invalid input. Input a coordinate such that the ship will not overflow off the board or overlap another ship.");
                     i--;
                 }
             }
