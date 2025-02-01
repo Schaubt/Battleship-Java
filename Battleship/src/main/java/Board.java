@@ -30,6 +30,15 @@ public class Board {
             }
         }
     }
+    public void printDisplayGrid(){
+        int numOfCols = this.grid[0].length;
+        for(int i=0; i < this.displayGrid.length; i++){
+            for (int j = 0; j < numOfCols; j++) {
+                System.out.print(this.displayGrid[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
     public void display(){
         int numOfCols = this.grid[0].length;
         for (String[] strings : this.grid) {
