@@ -8,7 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class SetUpPhaseTest {
-    SetUpPhase setUpPhase = new SetUpPhase();
+    Player player1 = new HumanPlayer();
+    Player player2 = new HumanPlayer();
+    Game game = new Game();
+    SetUpPhase setUpPhase = new SetUpPhase(game);
     int mockRowNum = 2;
     int mockColNum = 1;
     char mockOrientation = 'h';
