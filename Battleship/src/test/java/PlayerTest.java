@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class HumanPlayerTest {
-    HumanPlayer mockPlayer = new HumanPlayer();
+class PlayerTest {
+    Player mockPlayer = new HumanPlayer();
     Player mockOpponent = new HumanPlayer();
 
     @Test
