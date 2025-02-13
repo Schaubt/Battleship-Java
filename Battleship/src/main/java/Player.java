@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class Player {
     private static int nextId = 0;
@@ -19,9 +20,32 @@ public abstract class Player {
         this.attackHistory = new String[10];
         this.isComputer = isComputer;
     }
-    public void placeShip(Ship ship ){
+    public void placeShip(Ship ship){
         this.bottomBoard.placeShip(ship);
         this.shipsAlive.put(ship.name, ship);
+    }
+    public boolean attack(int col, int row, Player targetPlayer){
+        if(col < 0 || col > 9){
+            return false;
+        }
+        else if(row < 0 || row > 9){
+            return false;
+        }
+        else if(Objects.equals(targetPlayer.bottomBoard.grid[row][col],"Miss"))
+        {
+            return false;
+        }
+        else if(Objects.equals(targetPlayer.bottomBoard.grid[row][col],"Hit"))
+        {
+            return false;
+        }
+        else if(Objects.equals(targetPlayer.bottomBoard.grid[row][col],null)) {
+            targetPlayer.bottomBoard.grid[row][col] = "Miss";
+        }
+        else {
+            targetPlayer.bottomBoard.grid[row][col] = "Hit";
+        }
+        return true;
     }
     public void setAliveShips(Ship ship){
         this.shipsAlive.put(ship.name, ship);
