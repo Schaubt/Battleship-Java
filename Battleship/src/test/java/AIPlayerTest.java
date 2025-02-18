@@ -122,12 +122,30 @@ class AIPlayerTest {
         int actual = mockAIPlayer.attackOrientation;
         assertEquals(expected, actual);
     }
-    public void AI_player_attack_miss_on_coordinate_directly_north_of_vertical_ship_switches_attack_intention_to_south() {
+    public void AI_player_chooses_attack_coordinate_horizontally_right_of_horizontal_ship() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        int expectedRow = row;
+        int expectedCol = col+1;
+        //int actualRow =  mockAIPlayer.calcAttackCoordinateRow();
+        //int actualCol = mockAIPlayer.calcAttackCoordinateCol();
+        //assertEquals(expectedRow, actualRow);
+        //assertEquals(expectedCol, actualCol);
     }
-    public void AI_player_attack_miss_on_coordinate_directly_south_of_vertical_ship_switches_attack_back_to_random() {
-    }
-    public void AI_player_attack_miss_on_coordinate_directly_west_of_horizontal_ship_switches_attack_intention_to_east() {
-    }
-    public void AI_player_attack_miss_on_coordinate_directly_east_of_horizontal_ship_switches_attack_intention_back_to_random() {
+    public void AI_player_chooses_attack_coordinate_vertically_above_of_vertical_ship() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        int expectedRow = row+1;
+        int expectedCol = col;
+        //int actualRow =  mockAIPlayer.calcAttackCoordinateRow();
+        //int actualCol = mockAIPlayer.calcAttackCoordinateCol();
+        //assertEquals(expectedRow, actualRow);
+        //assertEquals(expectedCol, actualCol);
     }
 }
