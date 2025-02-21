@@ -98,6 +98,7 @@ class AIPlayerTest {
         int actual = mockAIPlayer.attackOrientation;
         assertEquals(expected, actual);
     }
+    @Test
     public void AI_player_determines_ship_is_horizontal_if_attack_hits_directly_west_of_ship_discovery() {
         int col = 5;
         int row = 5;
@@ -110,6 +111,7 @@ class AIPlayerTest {
         int actual = mockAIPlayer.attackOrientation;
         assertEquals(expected, actual);
     }
+    @Test
     public void AI_player_determines_ship_is_horizontal_if_attack_hits_directly_east_of_ship_discovery() {
         int col = 5;
         int row = 5;
@@ -122,30 +124,94 @@ class AIPlayerTest {
         int actual = mockAIPlayer.attackOrientation;
         assertEquals(expected, actual);
     }
-    public void AI_player_chooses_attack_coordinate_horizontally_right_of_horizontal_ship() {
+    @Test
+    public void AI_DetermineCoordinate_LastAttackDidHit_HorizontalEnemyShipDiscovered_AttackingEast_ReturnCoordinateEastOfLastHit() {
         int col = 5;
         int row = 5;
         mockAIPlayer.rowOfShipDiscovery = row;
         mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.colOfLastAttack = col+1;
+        mockAIPlayer.rowOfLastAttack = row;
         mockAIPlayer.attackOrientation = 'h';
-        int expectedRow = row;
-        int expectedCol = col+1;
-        //int actualRow =  mockAIPlayer.calcAttackCoordinateRow();
-        //int actualCol = mockAIPlayer.calcAttackCoordinateCol();
-        //assertEquals(expectedRow, actualRow);
-        //assertEquals(expectedCol, actualCol);
+        mockAIPlayer.attackDirection = 'e';
+        mockAIPlayer.lastResult = "Hit";
+        int[] expected = new int[] {row,col+2};
+        int[] actual = mockAIPlayer.determineAttackCoordinate(mockOpponent);
+        assertArrayEquals(expected, actual);
     }
-    public void AI_player_chooses_attack_coordinate_vertically_above_of_vertical_ship() {
+    @Test
+    public void AI_DetermineCoordinate_LastAttackDidHit_VerticalEnemyShipDiscovered_AttackingNorth_ReturnCoordinateNorthOfLastHit() {
         int col = 5;
         int row = 5;
         mockAIPlayer.rowOfShipDiscovery = row;
         mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.colOfLastAttack = col;
+        mockAIPlayer.rowOfLastAttack = row+1;
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.attackDirection = 'n';
+        mockAIPlayer.lastResult = "Hit";
+        int[] expected = new int[] {row+2,col};
+        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineCoordinate_LastAttackDidHit_HorizontalEnemyShipDiscovered_AttackingWest_ReturnCoordinateWestOfLastHit() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.colOfLastAttack = col-1;
+        mockAIPlayer.rowOfLastAttack = row;
         mockAIPlayer.attackOrientation = 'h';
-        int expectedRow = row+1;
-        int expectedCol = col;
-        //int actualRow =  mockAIPlayer.calcAttackCoordinateRow();
-        //int actualCol = mockAIPlayer.calcAttackCoordinateCol();
-        //assertEquals(expectedRow, actualRow);
-        //assertEquals(expectedCol, actualCol);
+        mockAIPlayer.attackDirection = 'w';
+        mockAIPlayer.lastResult = "Hit";
+        int[] expected = new int[] {row,col-2};
+        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineCoordinate_LastAttackDidHit_VerticalEnemyShipDiscovered_AttackingSouth_ReturnCoordinateWestOfLastHit() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.colOfLastAttack = col;
+        mockAIPlayer.rowOfLastAttack = row-1;
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.lastResult = "Hit";
+        int[] expected = new int[] {row-2,col};
+        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineCoordinate_LastAttackDidMiss_HorizontalEnemyShipDiscovered_AttackingEast_ReturnCoordinateWestOfShipDiscovery() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.colOfLastAttack = col+1;
+        mockAIPlayer.rowOfLastAttack = row;
+        mockAIPlayer.attackOrientation = 'h';
+        mockAIPlayer.attackDirection = 'e';
+        mockAIPlayer.lastResult = "Miss";
+        int[] expected = new int[] {row,col-1};
+        int[] actual = mockAIPlayer.determineAttackCoordinate(mockOpponent);
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineCoordinate_LastAttackDidMiss_VerticalEnemyShipDiscovered_AttackingNorth_ReturnCoordinateSouthOfShipDiscovery() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.colOfLastAttack = col;
+        mockAIPlayer.rowOfLastAttack = row-1;
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.attackDirection = 'n';
+        mockAIPlayer.lastResult = "Miss";
+        int[] expected = new int[] {row-1,col};
+        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        assertArrayEquals(expected, actual);
     }
 }
