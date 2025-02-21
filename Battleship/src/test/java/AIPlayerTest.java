@@ -190,7 +190,6 @@ class AIPlayerTest {
         int row = 5;
         mockAIPlayer.rowOfShipDiscovery = row;
         mockAIPlayer.colOfShipDiscovery = col;
-        mockAIPlayer.colOfLastAttack = col+1;
         mockAIPlayer.rowOfLastAttack = row;
         mockAIPlayer.attackOrientation = 'h';
         mockAIPlayer.attackDirection = 'e';
@@ -205,8 +204,6 @@ class AIPlayerTest {
         int row = 5;
         mockAIPlayer.rowOfShipDiscovery = row;
         mockAIPlayer.colOfShipDiscovery = col;
-        mockAIPlayer.colOfLastAttack = col;
-        mockAIPlayer.rowOfLastAttack = row-1;
         mockAIPlayer.attackOrientation = 'v';
         mockAIPlayer.attackDirection = 'n';
         mockAIPlayer.lastResult = "Miss";

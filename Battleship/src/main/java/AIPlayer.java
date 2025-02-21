@@ -46,9 +46,8 @@ public class AIPlayer extends Player {
                 if (this.attackDirection == 'n') this.attackDirection = 'w';
                 else if (this.attackDirection == 'w') this.attackDirection = 's';
                 else if (this.attackDirection == 's') this.attackDirection = 'e';
-            }
-            else if(this.rowOfShipDiscovery != -1 && this.colOfShipDiscovery != -1){
-                if((this.attackOrientation == 'h' && this.attackDirection == 'e') || (this.attackOrientation == 'v' && this.attackDirection == 's')) {
+            } else if (this.rowOfShipDiscovery != -1 && this.colOfShipDiscovery != -1) {
+                if ((this.attackOrientation == 'h' && this.attackDirection == 'e') || (this.attackOrientation == 'v' && this.attackDirection == 's')) {
                     this.rowOfShipDiscovery = -1;
                     this.colOfShipDiscovery = -1;
                     this.attackOrientation = 'n';
@@ -64,44 +63,35 @@ public class AIPlayer extends Player {
         int col = -1;
         if (this.lastResult == "Hit") {
             if (!this.shipProbeInProgress) {
-                if (this.attackOrientation == 'h' && this.attackDirection == 'e') {
+                if (this.attackOrientation == 'h') {
                     row = this.rowOfLastAttack;
-                    col = this.colOfLastAttack + 1;
-                } else if (this.attackOrientation == 'h' && this.attackDirection == 'w') {
-                    return new int[]{this.rowOfLastAttack, this.colOfLastAttack - 1};
-                } else if (this.attackOrientation == 'v' && this.attackDirection == 'n') {
-                    return new int[]{this.rowOfLastAttack + 1, this.colOfLastAttack};
-                } else if (this.attackOrientation == 'v' && this.attackDirection == 's') {
-                    return new int[]{this.rowOfLastAttack - 1, this.colOfLastAttack};
+                    col = (this.attackDirection == 'e') ? this.colOfLastAttack + 1 : this.colOfLastAttack - 1;
+                } else if (this.attackOrientation == 'v') {
+                    col = this.colOfLastAttack;
+                    row = (this.attackDirection == 'n') ? this.rowOfLastAttack + 1 : this.rowOfLastAttack - 1;
                 }
             }
         } else if (this.lastResult == "Miss") {
             if (!this.shipProbeInProgress) {
-                if (this.attackOrientation == 'h' && this.attackDirection == 'e') {
-                    this.attackDirection = 'w';
-                    return new int[]{this.rowOfShipDiscovery, this.colOfShipDiscovery - 1};
-                } else if (this.attackOrientation == 'h' && this.attackDirection == 'w') {
-                    this.attackDirection = 'r';
-                    return new int[]{(int) (Math.random() * 10), (int) (Math.random() * 10)};
-                } else if (this.attackOrientation == 'v' && this.attackDirection == 'n') {
-                    this.attackOrientation = 's';
-                    return new int[]{this.rowOfShipDiscovery - 1, this.colOfShipDiscovery};
-                } else if (this.attackOrientation == 'v' && this.attackDirection == 's') {
-                    this.attackDirection = 'r';
-                    return new int[]{(int) (Math.random() * 10), (int) (Math.random() * 10)};
+                if (this.attackOrientation == 'h') {
+                    row = (this.attackDirection == 'e') ? this.rowOfShipDiscovery : (int) (Math.random() * 10);
+                    col = (this.attackDirection == 'e') ? this.colOfShipDiscovery - 1 : (int) (Math.random() * 10); // if east, attack west
+                    this.attackDirection = (this.attackDirection == 'e') ? 'w' : 'r';
+                } else if (this.attackOrientation == 'v') {
+                    row = (this.attackDirection == 'n') ? this.rowOfShipDiscovery - 1 : (int) (Math.random() * 10); // if north, attack south
+                    col = (this.attackDirection == 'n') ? this.colOfShipDiscovery : (int) (Math.random() * 10);
+                    this.attackDirection = (this.attackDirection == 'n') ? 's' : 'r';
                 }
             }
         } else {
-            if (this.attackOrientation == 'h' && this.attackDirection == 'e') {
-                return new int[]{this.rowOfShipDiscovery, this.colOfShipDiscovery + 2};
-            } else if (this.attackOrientation == 'h' && this.attackDirection == 'w') {
-                return new int[]{this.rowOfShipDiscovery, this.colOfShipDiscovery - 1};
-            } else if (this.attackOrientation == 'v' && this.attackDirection == 'n') {
-                return new int[]{this.rowOfShipDiscovery + 1, this.colOfShipDiscovery};
-            } else if (this.attackOrientation == 'v' && this.attackDirection == 's') {
-                return new int[]{this.rowOfShipDiscovery - 1, this.colOfShipDiscovery};
+            if (this.attackOrientation == 'h') {
+                row = this.rowOfShipDiscovery;
+                col = (this.attackDirection == 'e') ? this.colOfShipDiscovery + 1 : this.colOfShipDiscovery - 1;
+            } else if (this.attackOrientation == 'v') {
+                col = this.colOfShipDiscovery;
+                row = (this.attackDirection == 'n') ? this.rowOfShipDiscovery + 1 : this.rowOfShipDiscovery - 1;
             }
         }
-        return new int[]{row,col};
+        return new int[]{row, col};
     }
 }
