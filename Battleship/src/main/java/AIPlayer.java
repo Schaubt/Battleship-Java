@@ -30,15 +30,15 @@ public class AIPlayer extends Player {
         boolean res = super.attack(col, row, targetPlayer);
         if (Objects.equals(targetPlayer.bottomBoard.grid[row][col], "Hit")) {
             this.lastResult = targetPlayer.bottomBoard.grid[row][col];
-            if (this.rowOfShipDiscovery == -1 && this.colOfShipDiscovery == -1 && this.attackDirection == 'r') {
+            if (this.shipProbeInProgress) {
+                if (attackDirection == 'w' || attackDirection == 'e') this.attackOrientation = 'h';
+                else if (attackDirection == 'n' || attackDirection == 's') this.attackOrientation = 'v';
+                this.shipProbeInProgress = false;
+            } else {
                 this.rowOfShipDiscovery = row;
                 this.colOfShipDiscovery = col;
                 this.attackDirection = 'n';
                 this.shipProbeInProgress = true;
-            } else if (this.shipProbeInProgress) {
-                if (attackDirection == 'w' || attackDirection == 'e') this.attackOrientation = 'h';
-                else if (attackDirection == 'n' || attackDirection == 's') this.attackOrientation = 'v';
-                this.shipProbeInProgress = false;
             }
         } else if (Objects.equals(targetPlayer.bottomBoard.grid[row][col], "Miss")) {
             this.lastResult = targetPlayer.bottomBoard.grid[row][col];
