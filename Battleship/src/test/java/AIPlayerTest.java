@@ -27,47 +27,40 @@ class AIPlayerTest {
     }
     @Test
     public void AI_player_attack_direction_is_north_upon_initial_enemy_ship_discovery(){
-        int col = 5;
-        int row = 5;
         mockAIPlayer.attackDirection = 'r';
-        mockOpponent.bottomBoard.grid[row][col] = "Carrier";
-        mockAIPlayer.attack(col, row, mockOpponent);
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.lastResult = "Miss";
+        mockAIPlayer.determineAttackDirection();
         int expected = 'n';
         int actual = mockAIPlayer.attackDirection;
         assertEquals(expected, actual);
     }
     @Test
     public void AI_player_attack_direction_switches_to_west_of_enemy_ship_discovery_following_north_coordinate_miss() {
-        int col = 5;
-        int row = 5;
         mockAIPlayer.attackDirection = 'n';
-        mockOpponent.bottomBoard.grid[row][col] = null;
+        mockAIPlayer.lastResult = "Miss";
         mockAIPlayer.shipProbeInProgress = true;
-        mockAIPlayer.attack(col, row, mockOpponent);
+        mockAIPlayer.determineAttackDirection();
         int expected = 'w';
         int actual = mockAIPlayer.attackDirection;
         assertEquals(expected, actual);
     }
     @Test
     public void AI_player_attack_direction_switches_to_south_of_enemy_ship_discovery_following_west_coordinate_miss() {
-        int col = 5;
-        int row = 5;
+        mockAIPlayer.lastResult = "Miss";
         mockAIPlayer.attackDirection = 'w';
-        mockOpponent.bottomBoard.grid[row][col] = null;
         mockAIPlayer.shipProbeInProgress = true;
-        mockAIPlayer.attack(col, row, mockOpponent);
+        mockAIPlayer.determineAttackDirection();
         int expected = 's';
         int actual = mockAIPlayer.attackDirection;
         assertEquals(expected, actual);
     }
     @Test
     public void AI_player_attack_direction_switches_to_east_of_enemy_ship_discovery_following_south_coordinate_miss() {
-        int col = 5;
-        int row = 5;
         mockAIPlayer.attackDirection = 's';
-        mockOpponent.bottomBoard.grid[row][col] = null;
+        mockAIPlayer.lastResult = "Miss";
         mockAIPlayer.shipProbeInProgress = true;
-        mockAIPlayer.attack(col, row, mockOpponent);
+        mockAIPlayer.determineAttackDirection();
         int expected = 'e';
         int actual = mockAIPlayer.attackDirection;
         assertEquals(expected, actual);
