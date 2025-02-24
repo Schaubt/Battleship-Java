@@ -298,4 +298,18 @@ class AIPlayerTest {
         boolean actual = mockAIPlayer.attackDirectionIsNorthOrSouth();
         assertTrue(actual);
     }
+    @Test
+    public void ship_probe_status_toggles_to_false_when_true(){
+        mockAIPlayer.shipProbeInProgress = true;
+        mockAIPlayer.toggleShipProbeStatus();
+        boolean actual = mockAIPlayer.shipProbeInProgress;
+        assertFalse(actual);
+    }
+    @Test
+    public void ship_probe_status_toggles_to_true_when_false(){
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.toggleShipProbeStatus();
+        boolean actual = mockAIPlayer.shipProbeInProgress;
+        assertTrue(actual);
+    }
 }
