@@ -220,4 +220,20 @@ class AIPlayerTest {
         char actual = mockAIPlayer.attackDirection;
         assertEquals(expected, actual);
     }
+    @Test
+    public void set_discovery_coordinates_to_match_input_row(){
+        int expected = 5;
+        int col = 7;
+        mockAIPlayer.setShipDiscoveryCoordinates(expected, col);
+        int actual = mockAIPlayer.rowOfShipDiscovery;
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void set_discovery_coordinates_to_match_input_col(){
+        int row = 5;
+        int expected = 7;
+        mockAIPlayer.setShipDiscoveryCoordinates(row, expected);
+        int actual = mockAIPlayer.colOfShipDiscovery;
+        assertEquals(expected, actual);
+    }
 }
