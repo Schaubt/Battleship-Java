@@ -243,4 +243,11 @@ class AIPlayerTest {
         char actual = mockAIPlayer.attackOrientation;
         assertEquals(expected, actual);
     }
+    @Test
+    public void set_attack_direction_to_match_argument(){
+        char expected = 'n';
+        mockAIPlayer.setAttackDirection(expected);
+        char actual = mockAIPlayer.attackDirection;
+        assertEquals(expected, actual);
+    }
 }
