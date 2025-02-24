@@ -46,6 +46,9 @@ public class AIPlayer extends Player {
     public boolean attackDirectionIsNorthOrSouth() {
         return this.attackDirection == 'n' || this.attackDirection == 's';
     }
+    public void toggleShipProbeStatus(){
+        this.shipProbeInProgress = !this.shipProbeInProgress;
+    }
 
     public boolean attackIntentionIsEastAndHorizontal() {
         return this.attackDirection == 'e' && this.attackOrientation == 'h';
@@ -73,10 +76,10 @@ public class AIPlayer extends Player {
 
     public void handleHit(int row, int col) {
         if (this.shipProbeInProgress) {
-            this.shipProbeInProgress = false;
+            this.toggleShipProbeStatus();
         } else {
             this.setShipDiscoveryCoordinates(row, col);
-            this.shipProbeInProgress = true;
+            this.toggleShipProbeStatus();
         }
     }
 
