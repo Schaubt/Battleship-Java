@@ -250,4 +250,52 @@ class AIPlayerTest {
         char actual = mockAIPlayer.attackDirection;
         assertEquals(expected, actual);
     }
+    @Test
+    public void attackDirectionIsEastOrWest_DirectionIsNorth_ReturnFalse(){
+        mockAIPlayer.attackDirection = 'n';
+        boolean actual = mockAIPlayer.attackDirectionIsEastOrWest();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackDirectionIsEastOrWest_DirectionIsSouth_ReturnFalse(){
+        mockAIPlayer.attackDirection = 's';
+        boolean actual = mockAIPlayer.attackDirectionIsEastOrWest();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackDirectionIsNorthOrSouth_DirectionIsEast_ReturnFalse(){
+        mockAIPlayer.attackDirection = 'e';
+        boolean actual = mockAIPlayer.attackDirectionIsNorthOrSouth();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackDirectionIsNorthOrSouth_DirectionIsWest_ReturnFalse(){
+        mockAIPlayer.attackDirection = 'w';
+        boolean actual = mockAIPlayer.attackDirectionIsNorthOrSouth();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackDirectionIsEastOrWest_DirectionIsEast_ReturnTrue(){
+        mockAIPlayer.attackDirection = 'e';
+        boolean actual = mockAIPlayer.attackDirectionIsEastOrWest();
+        assertTrue(actual);
+    }
+    @Test
+    public void attackDirectionIsEastOrWest_DirectionIsWest_ReturnTrue(){
+        mockAIPlayer.attackDirection = 'w';
+        boolean actual = mockAIPlayer.attackDirectionIsEastOrWest();
+        assertTrue(actual);
+    }
+    @Test
+    public void attackDirectionIsNorthOrSouth_DirectionIsNorth_ReturnTrue(){
+        mockAIPlayer.attackDirection = 'n';
+        boolean actual = mockAIPlayer.attackDirectionIsNorthOrSouth();
+        assertTrue(actual);
+    }
+    @Test
+    public void attackDirectionIsNorthOrSouth_DirectionIsSouth_ReturnTrue(){
+        mockAIPlayer.attackDirection = 's';
+        boolean actual = mockAIPlayer.attackDirectionIsNorthOrSouth();
+        assertTrue(actual);
+    }
 }
