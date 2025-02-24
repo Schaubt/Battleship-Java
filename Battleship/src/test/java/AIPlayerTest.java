@@ -221,7 +221,7 @@ class AIPlayerTest {
         assertEquals(expected, actual);
     }
     @Test
-    public void set_discovery_coordinates_to_match_input_row(){
+    public void set_discovery_coordinates_to_match_argument_row(){
         int expected = 5;
         int col = 7;
         mockAIPlayer.setShipDiscoveryCoordinates(expected, col);
@@ -229,11 +229,18 @@ class AIPlayerTest {
         assertEquals(expected, actual);
     }
     @Test
-    public void set_discovery_coordinates_to_match_input_col(){
+    public void set_discovery_coordinates_to_match_argument_col(){
         int row = 5;
         int expected = 7;
         mockAIPlayer.setShipDiscoveryCoordinates(row, expected);
         int actual = mockAIPlayer.colOfShipDiscovery;
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void set_orientation_to_match_argument(){
+        char expected = 'h';
+        mockAIPlayer.setAttackOrientation(expected);
+        char actual = mockAIPlayer.attackOrientation;
         assertEquals(expected, actual);
     }
 }
