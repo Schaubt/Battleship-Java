@@ -312,4 +312,89 @@ class AIPlayerTest {
         boolean actual = mockAIPlayer.shipProbeInProgress;
         assertTrue(actual);
     }
+
+    @Test
+    public void attackIntentionIsWestAndHorizontal_DirectionIsNotWest_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 'e';
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.attackIntentionIsWestAndHorizontal();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsWestAndHorizontal_OrientationIsNotHorizontal_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 'w';
+        mockAIPlayer.attackOrientation = 'v';
+        boolean actual = mockAIPlayer.attackIntentionIsWestAndHorizontal();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsWestAndHorizontal_DirectionIsWest_OrientationIsHorizontal_ReturnsTrue(){
+        mockAIPlayer.attackDirection = 'w';
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.attackIntentionIsWestAndHorizontal();
+        assertTrue(actual);
+    }
+    @Test
+    public void attackIntentionIsEastAndHorizontal_DirectionIsNotEast_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 'w';
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.attackIntentionIsEastAndHorizontal();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsEastAndHorizontal_OrientationIsNotHorizontal_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 'e';
+        mockAIPlayer.attackOrientation = 'v';
+        boolean actual = mockAIPlayer.attackIntentionIsEastAndHorizontal();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsEastAndHorizontal_DirectionIsEast_OrientationIsHorizontal_ReturnsTrue(){
+        mockAIPlayer.attackDirection = 'e';
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.attackIntentionIsEastAndHorizontal();
+        assertTrue(actual);
+    }
+    @Test
+    public void attackIntentionIsNorthAndVertical_DirectionIsNotNorth_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.attackOrientation = 'v';
+        boolean actual = mockAIPlayer.attackIntentionIsNorthAndVertical();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsNorthAndVertical_DirectionIsNotVertical_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 'n';
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.attackIntentionIsNorthAndVertical();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsNorthAndVertical_DirectionIsNorth_OrientationIsVertical_ReturnsTrue(){
+        mockAIPlayer.attackDirection = 'n';
+        mockAIPlayer.attackOrientation = 'v';
+        boolean actual = mockAIPlayer.attackIntentionIsNorthAndVertical();
+        assertTrue(actual);
+    }
+    @Test
+    public void attackIntentionIsSouthAndVertical_DirectionIsNotSouth_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 'n';
+        mockAIPlayer.attackOrientation = 'v';
+        boolean actual = mockAIPlayer.attackIntentionIsSouthAndVertical();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsSouthAndVertical_DirectionIsNotVertical_ReturnsFalse(){
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.attackIntentionIsSouthAndVertical();
+        assertFalse(actual);
+    }
+    @Test
+    public void attackIntentionIsSouthAndVertical_DirectionIsSouth_OrientationIsVertical_ReturnsTrue(){
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.attackOrientation = 'v';
+        boolean actual = mockAIPlayer.attackIntentionIsSouthAndVertical();
+        assertTrue(actual);
+    }
 }

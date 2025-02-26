@@ -90,10 +90,8 @@ public class AIPlayer extends Player {
     }
 
     public void handleMiss() {
-        if (this.shipAttackInProgress()) {
-            if ((this.attackIntentionIsWestAndHorizontal()) || (this.attackIntentionIsSouthAndVertical())) {
+        if (this.shipAttackInProgress() && (this.attackIntentionIsWestAndHorizontal() || this.attackIntentionIsSouthAndVertical())) {
                 this.setShipDiscoveryCoordinates(-1, -1);
-            }
         }
     }
 
