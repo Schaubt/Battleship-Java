@@ -26,104 +26,11 @@ public class AIPlayer extends Player {
         this.colOfLastAttack = -1;
     }
 
-    public void setShipDiscoveryCoordinates(int row, int col) {
-        this.rowOfShipDiscovery = row;
-        this.colOfShipDiscovery = col;
-    }
-
-    public void setAttackOrientation(char orientation) {
-        this.attackOrientation = orientation;
-    }
-
-    public void setAttackDirection(char dir) {
-        this.attackDirection = dir;
-    }
-
-    public boolean attackDirectionIsEastOrWest() {
-        return this.attackDirection == 'w' || this.attackDirection == 'e';
-    }
-
-    public boolean attackDirectionIsNorthOrSouth() {
-        return this.attackDirection == 'n' || this.attackDirection == 's';
-    }
-    public void toggleShipProbeStatus(){
-        this.shipProbeInProgress = !this.shipProbeInProgress;
-    }
-
-    public boolean attackIntentionIsEastAndHorizontal() {
-        return this.attackDirection == 'e' && this.attackOrientation == 'h';
-    }
-    public boolean attackIntentionIsWestAndHorizontal() {
-        return this.attackDirection == 'w' && this.attackOrientation == 'h';
-    }
-
-    public boolean attackIntentionIsNorthAndVertical() {
-        return this.attackDirection == 'n' && this.attackOrientation == 'v';
-    }
-    public boolean attackIntentionIsSouthAndVertical() {
-        return this.attackDirection == 's' && this.attackOrientation == 'v';
-    }
-
     @Override
     public boolean attack(int col, int row, Player targetPlayer) {
         boolean res = super.attack(col, row, targetPlayer);
         this.handleAIAttack(col, row, targetPlayer);
         return res;
-    }
-
-    public void handleAIAttack(int col, int row, Player targetPlayer) {
-        this.lastResult = targetPlayer.bottomBoard.grid[row][col];
-        if (this.lastResult == "Hit") {
-            this.handleHit(row, col);
-        } else if (this.lastResult == "Miss") {
-            this.handleMiss();
-        }
-    }
-
-    public void handleHit(int row, int col) {
-        if (this.shipProbeInProgress) {
-            this.toggleShipProbeStatus();
-        } else {
-            this.setShipDiscoveryCoordinates(row, col);
-            this.toggleShipProbeStatus();
-        }
-    }
-
-    public void handleMiss() {
-        if (this.shipAttackInProgress() && (this.attackIntentionIsWestAndHorizontal() || this.attackIntentionIsSouthAndVertical())) {
-                this.setShipDiscoveryCoordinates(-1, -1);
-        }
-    }
-
-    public void determineAttackOrientation() {
-        if (Objects.equals(this.lastResult, "Hit") && this.shipProbeInProgress) {
-            if (this.attackDirectionIsEastOrWest()) setAttackOrientation('h');
-            else if (this.attackDirectionIsNorthOrSouth()) setAttackOrientation('v');
-        }
-    }
-
-    public void determineAttackDirection() {
-        if (Objects.equals(this.lastResult, "Hit")) {
-            if (!this.shipAttackInProgress()) {
-                setAttackDirection('n');
-            }
-        } else if (Objects.equals(this.lastResult, "Miss")) {
-            if (this.shipProbeInProgress) {
-                switch (this.attackDirection) {
-                    case 'n' -> setAttackDirection('w');
-                    case 'w' -> setAttackDirection('s');
-                    case 's' -> setAttackDirection('e');
-                }
-            } else if (this.shipAttackInProgress()) {
-                if (this.attackIntentionIsEastAndHorizontal()) {
-                    this.setAttackDirection('w');
-                } else if (this.attackIntentionIsNorthAndVertical()) {
-                    this.setAttackDirection('s');
-                } else {
-                    this.setAttackDirection('r');
-                }
-            }
-        }
     }
 
     public int[] determineAttackCoordinate(Player targetPlayer) {
@@ -163,6 +70,102 @@ public class AIPlayer extends Player {
             }
         }
         return new int[]{row, col};
+    }
+
+    public void handleAIAttack(int col, int row, Player targetPlayer) {
+        this.lastResult = targetPlayer.bottomBoard.grid[row][col];
+        if (this.lastResult == "Hit") {
+            this.handleHit(row, col);
+        } else if (this.lastResult == "Miss") {
+            this.handleMiss();
+        }
+    }
+
+    public void handleHit(int row, int col) {
+        if (this.shipProbeInProgress) {
+            this.toggleShipProbeStatus();
+        } else {
+            this.setShipDiscoveryCoordinates(row, col);
+            this.toggleShipProbeStatus();
+        }
+    }
+
+    public void handleMiss() {
+        if (this.shipAttackInProgress() && (this.attackIntentionIsWestAndHorizontal() || this.attackIntentionIsSouthAndVertical())) {
+            this.setShipDiscoveryCoordinates(-1, -1);
+        }
+    }
+
+    public void setShipDiscoveryCoordinates(int row, int col) {
+        this.rowOfShipDiscovery = row;
+        this.colOfShipDiscovery = col;
+    }
+
+    public void setAttackOrientation(char orientation) {
+        this.attackOrientation = orientation;
+    }
+
+    public void setAttackDirection(char dir) {
+        this.attackDirection = dir;
+    }
+
+    public boolean attackDirectionIsEastOrWest() {
+        return this.attackDirection == 'w' || this.attackDirection == 'e';
+    }
+
+    public boolean attackDirectionIsNorthOrSouth() {
+        return this.attackDirection == 'n' || this.attackDirection == 's';
+    }
+
+    public void toggleShipProbeStatus() {
+        this.shipProbeInProgress = !this.shipProbeInProgress;
+    }
+
+    public boolean attackIntentionIsEastAndHorizontal() {
+        return this.attackDirection == 'e' && this.attackOrientation == 'h';
+    }
+
+    public boolean attackIntentionIsWestAndHorizontal() {
+        return this.attackDirection == 'w' && this.attackOrientation == 'h';
+    }
+
+    public boolean attackIntentionIsNorthAndVertical() {
+        return this.attackDirection == 'n' && this.attackOrientation == 'v';
+    }
+
+    public boolean attackIntentionIsSouthAndVertical() {
+        return this.attackDirection == 's' && this.attackOrientation == 'v';
+    }
+
+    public void determineAttackOrientation() {
+        if (Objects.equals(this.lastResult, "Hit") && this.shipProbeInProgress) {
+            if (this.attackDirectionIsEastOrWest()) setAttackOrientation('h');
+            else if (this.attackDirectionIsNorthOrSouth()) setAttackOrientation('v');
+        }
+    }
+
+    public void determineAttackDirection() {
+        if (Objects.equals(this.lastResult, "Hit")) {
+            if (!this.shipAttackInProgress()) {
+                setAttackDirection('n');
+            }
+        } else if (Objects.equals(this.lastResult, "Miss")) {
+            if (this.shipProbeInProgress) {
+                switch (this.attackDirection) {
+                    case 'n' -> setAttackDirection('w');
+                    case 'w' -> setAttackDirection('s');
+                    case 's' -> setAttackDirection('e');
+                }
+            } else if (this.shipAttackInProgress()) {
+                if (this.attackIntentionIsEastAndHorizontal()) {
+                    this.setAttackDirection('w');
+                } else if (this.attackIntentionIsNorthAndVertical()) {
+                    this.setAttackDirection('s');
+                } else {
+                    this.setAttackDirection('r');
+                }
+            }
+        }
     }
 
     public boolean shipAttackInProgress() {
