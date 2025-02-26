@@ -53,9 +53,15 @@ public class AIPlayer extends Player {
     public boolean attackIntentionIsEastAndHorizontal() {
         return this.attackDirection == 'e' && this.attackOrientation == 'h';
     }
+    public boolean attackIntentionIsWestAndHorizontal() {
+        return this.attackDirection == 'w' && this.attackOrientation == 'h';
+    }
 
     public boolean attackIntentionIsNorthAndVertical() {
         return this.attackDirection == 'n' && this.attackOrientation == 'v';
+    }
+    public boolean attackIntentionIsSouthAndVertical() {
+        return this.attackDirection == 's' && this.attackOrientation == 'v';
     }
 
     @Override
@@ -85,7 +91,7 @@ public class AIPlayer extends Player {
 
     public void handleMiss() {
         if (this.shipAttackInProgress()) {
-            if ((this.attackOrientation == 'h' && this.attackDirection == 'w') || (this.attackOrientation == 'v' && this.attackDirection == 's')) {
+            if ((this.attackIntentionIsWestAndHorizontal()) || (this.attackIntentionIsSouthAndVertical())) {
                 this.setShipDiscoveryCoordinates(-1, -1);
             }
         }
