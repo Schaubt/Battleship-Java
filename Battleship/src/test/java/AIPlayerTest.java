@@ -131,7 +131,7 @@ class AIPlayerTest {
         mockAIPlayer.attackDirection = 'e';
         mockAIPlayer.lastResult = "Hit";
         int[] expected = new int[] {row,mockAIPlayer.colOfLastAttack+1};
-        int[] actual = mockAIPlayer.determineAttackCoordinate(mockOpponent);
+        int[] actual = mockAIPlayer.determineAttackCoordinate();
         assertArrayEquals(expected, actual);
     }
     @Test
@@ -146,7 +146,7 @@ class AIPlayerTest {
         mockAIPlayer.attackDirection = 'n';
         mockAIPlayer.lastResult = "Hit";
         int[] expected = new int[] {row+2,col};
-        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        int[] actual = mockAIPlayer.determineAttackCoordinate();
         assertArrayEquals(expected, actual);
     }
     @Test
@@ -160,8 +160,8 @@ class AIPlayerTest {
         mockAIPlayer.attackOrientation = 'h';
         mockAIPlayer.attackDirection = 'w';
         mockAIPlayer.lastResult = "Hit";
-        int[] expected = new int[] {row,col-2};
-        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        int[] expected = new int[] {row,mockAIPlayer.colOfLastAttack-1};
+        int[] actual = mockAIPlayer.determineAttackCoordinate();
         assertArrayEquals(expected, actual);
     }
     @Test
@@ -176,7 +176,7 @@ class AIPlayerTest {
         mockAIPlayer.attackDirection = 's';
         mockAIPlayer.lastResult = "Hit";
         int[] expected = new int[] {mockAIPlayer.rowOfLastAttack-1,col};
-        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        int[] actual = mockAIPlayer.determineAttackCoordinate();
         assertArrayEquals(expected, actual);
     }
     @Test
@@ -190,7 +190,7 @@ class AIPlayerTest {
         mockAIPlayer.attackDirection = 'e';
         mockAIPlayer.lastResult = "Miss";
         int[] expected = new int[] {row,col-1};
-        int[] actual = mockAIPlayer.determineAttackCoordinate(mockOpponent);
+        int[] actual = mockAIPlayer.determineAttackCoordinate();
         assertArrayEquals(expected, actual);
     }
     @Test
@@ -203,7 +203,7 @@ class AIPlayerTest {
         mockAIPlayer.attackDirection = 'n';
         mockAIPlayer.lastResult = "Miss";
         int[] expected = new int[] {row-1,col};
-        int[] actual = mockAIPlayer.determineAttackCoordinate(mockAIPlayer);
+        int[] actual = mockAIPlayer.determineAttackCoordinate();
         assertArrayEquals(expected, actual);
     }
     @Test

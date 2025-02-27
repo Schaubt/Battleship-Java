@@ -33,43 +33,19 @@ public class AIPlayer extends Player {
         return res;
     }
 
-    public int[] determineAttackCoordinate(Player targetPlayer) {
-        int row = -1;
-        int col = -1;
+    public int[] determineAttackCoordinate() {
+        int row = this.rowOfShipDiscovery;
+        int col = this.colOfShipDiscovery;
+
         this.determineAttackDirection();
         this.determineAttackOrientation();
-        System.out.println(this.attackDirection);
-        if (this.lastResult == "Hit") {
-            if (!this.shipProbeInProgress) {
-                //getNextCoordinateInAttackDirection()
-                if (this.attackOrientation == 'h') {
-                    row = this.rowOfLastAttack;
-                    col = (this.attackDirection == 'e') ? this.colOfLastAttack + 1 : this.colOfLastAttack - 1;
-                } else if (this.attackOrientation == 'v') {
-                    col = this.colOfLastAttack;
-                    row = (this.attackDirection == 'n') ? this.rowOfLastAttack + 1 : this.rowOfLastAttack - 1;
-                }
-            }
-        } else if (this.lastResult == "Miss") {
-            if (!this.shipProbeInProgress) {
-                if (this.attackOrientation == 'h') {
-                    row = (this.attackDirection == 'w') ? this.rowOfShipDiscovery : (int) (Math.random() * 10);
-                    col = (this.attackDirection == 'w') ? this.colOfShipDiscovery - 1 : (int) (Math.random() * 10); // if east, attack west
-                } else if (this.attackOrientation == 'v') {
-                    row = (this.attackDirection == 's') ? this.rowOfShipDiscovery - 1 : (int) (Math.random() * 10); // if north, attack south
-                    col = (this.attackDirection == 's') ? this.colOfShipDiscovery : (int) (Math.random() * 10);
-                }
-            }
-        } else {
-            if (this.attackOrientation == 'h') {
-                row = this.rowOfShipDiscovery;
-                col = (this.attackDirection == 'e') ? this.colOfShipDiscovery + 1 : this.colOfShipDiscovery - 1;
-            } else if (this.attackOrientation == 'v') {
-                col = this.colOfShipDiscovery;
-                row = (this.attackDirection == 'n') ? this.rowOfShipDiscovery + 1 : this.rowOfShipDiscovery - 1;
-            }
+
+        if ((Objects.equals(this.lastResult, "Hit")) && !this.shipProbeInProgress) {
+            row = this.rowOfLastAttack;
+            col = this.colOfLastAttack;
         }
-        return new int[]{row, col};
+
+        return this.getAttackCoordinate(row, col);
     }
 
     public void handleAIAttack(int col, int row, Player targetPlayer) {
@@ -94,6 +70,43 @@ public class AIPlayer extends Player {
         if (this.shipAttackInProgress() && (this.attackIntentionIsWestAndHorizontal() || this.attackIntentionIsSouthAndVertical())) {
             this.setShipDiscoveryCoordinates(-1, -1);
         }
+    }
+
+    public int[] getAttackCoordinate(int row, int col) {
+        int[] res = new int[2];
+        if (!this.shipProbeInProgress && (this.attackIntentionIsWestAndHorizontal() || this.attackIntentionIsSouthAndVertical())) {
+            res = this.getRandomCoordinate();
+        }
+        if (this.attackIntentionIsEastAndHorizontal()) {
+            res = this.getEastCoordinate(row, col);
+        } else if (this.attackIntentionIsWestAndHorizontal()) {
+            res = this.getWestCoordinate(row, col);
+        } else if (this.attackIntentionIsNorthAndVertical()) {
+            res = this.getNorthCoordinate(row, col);
+        } else if (this.attackIntentionIsSouthAndVertical()) {
+            res = this.getSouthCoordinate(row, col);
+        }
+        return res;
+    }
+
+    public int[] getNorthCoordinate(int row, int col) {
+        return new int[]{row + 1, col};
+    }
+
+    public int[] getSouthCoordinate(int row, int col) {
+        return new int[]{row - 1, col};
+    }
+
+    public int[] getEastCoordinate(int row, int col) {
+        return new int[]{row, col + 1};
+    }
+
+    public int[] getWestCoordinate(int row, int col) {
+        return new int[]{row, col - 1};
+    }
+
+    public int[] getRandomCoordinate() {
+        return new int[]{(int) (Math.random() * 10), (int) (Math.random() * 10)};
     }
 
     public void setShipDiscoveryCoordinates(int row, int col) {
