@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class AIPlayer extends Player {
@@ -12,8 +10,6 @@ public class AIPlayer extends Player {
     int rowOfLastAttack;
     int colOfLastAttack;
     String lastResult;
-    List<String> HitMissHistory = new ArrayList<>();
-    boolean shipDiscovered;
 
     public AIPlayer() {
         super(true);
