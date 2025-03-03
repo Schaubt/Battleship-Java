@@ -397,4 +397,109 @@ class AIPlayerTest {
         boolean actual = mockAIPlayer.attackIntentionIsSouthAndVertical();
         assertTrue(actual);
     }
+    @Test
+    public void getNorthCoordinate_ReturnsIncrementedRow(){
+        int row = 5;
+        int col = 5;
+        int expected = row+1;
+        int actual = mockAIPlayer.getNorthCoordinate(row, col)[0];
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void getNorthCoordinate_ReturnsUnchangedColumn(){
+        int row = 5;
+        int col = 5;
+        int expected = col;
+        int actual = mockAIPlayer.getNorthCoordinate(row, col)[1];
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void getSouthCoordinate_ReturnsDecrementedRow(){
+        int row = 5;
+        int col = 5;
+        int expected = row-1;
+        int actual = mockAIPlayer.getSouthCoordinate(row, col)[0];
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void getSouthCoordinate_ReturnsUnchangedColumn(){
+        int row = 5;
+        int col = 5;
+        
+        int expected = row-1;
+        int actual = mockAIPlayer.getSouthCoordinate(row, col)[0];
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void getEastCoordinate_ReturnsIncrementedColumn(){
+        int row = 5;
+        int col = 5;
+        int expected = col+1;
+        int actual = mockAIPlayer.getEastCoordinate(row, col)[1];
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void getWestCoordinate_ReturnsDecrementedColumn(){
+        int row = 5;
+        int col = 5;
+        int expected = col-1;
+        int actual = mockAIPlayer.getWestCoordinate(row, col)[1];
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void handleMiss_ShipAttackInProgress_attackIntentionIsWestAndHorizontal_ResetDiscoveryCoordinates(){
+        int row = 5;
+        int col = 5;
+        mockAIPlayer.attackDirection = 'w';
+        mockAIPlayer.attackOrientation = 'h';
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.handleMiss();
+        int[] expected = new int[]{-1,-1};
+        int[] actual = new int[]{mockAIPlayer.rowOfShipDiscovery, mockAIPlayer.colOfShipDiscovery};
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void handleMiss_ShipAttackInProgress_attackIntentionIsSouthAndVertical_ResetDiscoveryCoordinates(){
+        int row = 5;
+        int col = 5;
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.handleMiss();
+        int[] expected = new int[]{-1,-1};
+        int[] actual = new int[]{mockAIPlayer.rowOfShipDiscovery, mockAIPlayer.colOfShipDiscovery};
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void handleMiss_ShipAttackNotInProgress_attackIntentionIsSouthAndVertical_DontChangeDiscoveryCoordinates(){
+        int row = 5;
+        int col = 5;
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.shipProbeInProgress = true;
+        mockAIPlayer.handleMiss();
+        int[] expected = new int[]{row,col};
+        int[] actual = new int[]{mockAIPlayer.rowOfShipDiscovery, mockAIPlayer.colOfShipDiscovery};
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void handleMiss_ShipAttackInProgress_attackIntentionIsNOYSouthAndVerticalOr_WestAndHorizontal_DontChangeDiscoveryCoordinates(){
+        int row = 5;
+        int col = 5;
+        mockAIPlayer.attackDirection = 'n';
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.handleMiss();
+        int[] expected = new int[]{row,col};
+        int[] actual = new int[]{mockAIPlayer.rowOfShipDiscovery, mockAIPlayer.colOfShipDiscovery};
+        assertArrayEquals(expected, actual);
+    }
 }
