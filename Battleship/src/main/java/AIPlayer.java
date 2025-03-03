@@ -50,20 +50,18 @@ public class AIPlayer extends Player {
 
     public void handleAIAttack(int col, int row, Player targetPlayer) {
         this.storeLastResult(row, col, targetPlayer);
-        if (this.lastResult == "Hit") {
+        if (this.lastResult.equals("Hit")) {
             this.handleHit(row, col);
-        } else if (this.lastResult == "Miss") {
+        } else if (this.lastResult.equals("Miss")) {
             this.handleMiss();
         }
     }
 
     public void handleHit(int row, int col) {
-        if (this.shipProbeInProgress) {
-            this.toggleShipProbeStatus();
-        } else {
+        if (!this.shipProbeInProgress) {
             this.setShipDiscoveryCoordinates(row, col);
-            this.toggleShipProbeStatus();
         }
+        this.toggleShipProbeStatus();
     }
 
     public void handleMiss() {
@@ -74,9 +72,11 @@ public class AIPlayer extends Player {
 
     public int[] getAttackCoordinate(int row, int col) {
         int[] res = new int[2];
-        if (!this.shipProbeInProgress && (this.attackIntentionIsWestAndHorizontal() || this.attackIntentionIsSouthAndVertical())) {
+        //TODO: FIX THIS SO THAT AFTER MISSING A COORDINATE NORTH OR EAST OF DISCOVERY, getRandomCoordinate() IS INVOKED
+        /* if (this.shipAttackInProgress() && ((this.attackIntentionIsWestAndHorizontal() && (this.topBoard.grid[this.rowOfShipDiscovery][this.colOfShipDiscovery-1] != null)) || (this.attackIntentionIsSouthAndVertical() && (this.topBoard.grid[this.rowOfShipDiscovery-1][this.colOfShipDiscovery] != null)))) {
             res = this.getRandomCoordinate();
         }
+        */
         if (this.attackIntentionIsEastAndHorizontal()) {
             res = this.getEastCoordinate(row, col);
         } else if (this.attackIntentionIsWestAndHorizontal()) {
@@ -87,9 +87,6 @@ public class AIPlayer extends Player {
             res = this.getSouthCoordinate(row, col);
         }
         return res;
-    }
-    public String getLastResult(){
-        return lastResult;
     }
     public void storeLastResult(int row, int col, Player targetPlayer){
         this.lastResult = targetPlayer.bottomBoard.grid[row][col];
