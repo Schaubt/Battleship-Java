@@ -72,12 +72,9 @@ public class AIPlayer extends Player {
 
     public int[] getAttackCoordinate(int row, int col) {
         int[] res = new int[2];
-        //TODO: FIX THIS SO THAT AFTER MISSING A COORDINATE NORTH OR EAST OF DISCOVERY, getRandomCoordinate() IS INVOKED
-        /* if (this.shipAttackInProgress() && ((this.attackIntentionIsWestAndHorizontal() && (this.topBoard.grid[this.rowOfShipDiscovery][this.colOfShipDiscovery-1] != null)) || (this.attackIntentionIsSouthAndVertical() && (this.topBoard.grid[this.rowOfShipDiscovery-1][this.colOfShipDiscovery] != null)))) {
+         if (!this.shipAttackInProgress() && ((this.attackIntentionIsWestAndHorizontal()) || (this.attackIntentionIsSouthAndVertical()))) {
             res = this.getRandomCoordinate();
-        }
-        */
-        if (this.attackIntentionIsEastAndHorizontal()) {
+        } else if (this.attackIntentionIsEastAndHorizontal()) {
             res = this.getEastCoordinate(row, col);
         } else if (this.attackIntentionIsWestAndHorizontal()) {
             res = this.getWestCoordinate(row, col);
