@@ -1,11 +1,7 @@
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -76,8 +72,6 @@ class AIPlayerTest {
     }
     @Test
     public void AI_player_determines_ship_is_vertical_if_attack_hits_directly_north_of_ship_discovery() {
-        int col = 5;
-        int row = 5;
         mockAIPlayer.attackDirection = 'n';
         mockAIPlayer.shipProbeInProgress = true;
         mockAIPlayer.lastResult = "Hit";
@@ -539,5 +533,27 @@ class AIPlayerTest {
         spyAIPlayer.handleAIAttack(col, row, mockOpponent);
         verify(spyAIPlayer, never()).handleMiss();
         verify(spyAIPlayer, never()).handleHit(row, col);
+    }
+    @Test public void handleHit_InvokesToggleShipProbeStatus(){
+        int row = 5;
+        int col = 5;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        spyAIPlayer.handleHit(row, col);
+        verify(spyAIPlayer, times(1)).toggleShipProbeStatus();
+    }
+    @Test public void handleHit_ShipProbeNotInProgress_InvokeSetShipDiscoveryCoordinates(){
+        int row = 5;
+        int col = 5;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        spyAIPlayer.handleHit(row, col);
+        verify(spyAIPlayer, times(1)).setShipDiscoveryCoordinates(row, col);
+    }
+    @Test public void handleHit_ShipProbeInProgress_DoNotInvokeSetShipDiscoveryCoordinates(){
+        int row = 5;
+        int col = 5;
+        mockAIPlayer.shipProbeInProgress = true;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        spyAIPlayer.handleHit(row, col);
+        verify(spyAIPlayer, never()).setShipDiscoveryCoordinates(row, col);
     }
 }

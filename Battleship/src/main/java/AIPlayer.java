@@ -50,20 +50,18 @@ public class AIPlayer extends Player {
 
     public void handleAIAttack(int col, int row, Player targetPlayer) {
         this.storeLastResult(row, col, targetPlayer);
-        if (this.lastResult == "Hit") {
+        if (this.lastResult.equals("Hit")) {
             this.handleHit(row, col);
-        } else if (this.lastResult == "Miss") {
+        } else if (this.lastResult.equals("Miss")) {
             this.handleMiss();
         }
     }
 
     public void handleHit(int row, int col) {
-        if (this.shipProbeInProgress) {
-            this.toggleShipProbeStatus();
-        } else {
+        if (!this.shipProbeInProgress) {
             this.setShipDiscoveryCoordinates(row, col);
-            this.toggleShipProbeStatus();
         }
+        this.toggleShipProbeStatus();
     }
 
     public void handleMiss() {
@@ -87,9 +85,6 @@ public class AIPlayer extends Player {
             res = this.getSouthCoordinate(row, col);
         }
         return res;
-    }
-    public String getLastResult(){
-        return lastResult;
     }
     public void storeLastResult(int row, int col, Player targetPlayer){
         this.lastResult = targetPlayer.bottomBoard.grid[row][col];
