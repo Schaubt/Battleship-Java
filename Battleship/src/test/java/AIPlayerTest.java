@@ -27,7 +27,6 @@ class AIPlayerTest {
         mockAIPlayer.shipProbeInProgress = false;
         mockAIPlayer.attack(col, row, mockOpponent);
         int actual_col = mockAIPlayer.colOfShipDiscovery;
-        System.out.println(mockAIPlayer.lastResult);
         assertEquals(col, actual_col);
     }
     @Test
@@ -534,26 +533,81 @@ class AIPlayerTest {
         verify(spyAIPlayer, never()).handleMiss();
         verify(spyAIPlayer, never()).handleHit(row, col);
     }
-    @Test public void handleHit_InvokesToggleShipProbeStatus(){
+    @Test
+    public void handleHit_InvokesToggleShipProbeStatus(){
         int row = 5;
         int col = 5;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         spyAIPlayer.handleHit(row, col);
         verify(spyAIPlayer, times(1)).toggleShipProbeStatus();
     }
-    @Test public void handleHit_ShipProbeNotInProgress_InvokeSetShipDiscoveryCoordinates(){
+    @Test
+    public void handleHit_ShipProbeNotInProgress_InvokeSetShipDiscoveryCoordinates(){
         int row = 5;
         int col = 5;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         spyAIPlayer.handleHit(row, col);
         verify(spyAIPlayer, times(1)).setShipDiscoveryCoordinates(row, col);
     }
-    @Test public void handleHit_ShipProbeInProgress_DoNotInvokeSetShipDiscoveryCoordinates(){
+    @Test
+    public void handleHit_ShipProbeInProgress_DoNotInvokeSetShipDiscoveryCoordinates(){
         int row = 5;
         int col = 5;
         mockAIPlayer.shipProbeInProgress = true;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         spyAIPlayer.handleHit(row, col);
+        verify(spyAIPlayer, never()).setShipDiscoveryCoordinates(row, col);
+    }
+    @Test
+    public void handleMiss_ShipAttackInProgress_IntentionIsVerticalAndSouth_InvokeSetShipDiscoveryCoordinatesToReset(){
+        int row = -1, col = -1;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(true);
+        Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+
+        spyAIPlayer.handleMiss();
+        verify(spyAIPlayer, times(1)).setShipDiscoveryCoordinates(row, col);
+    }
+    @Test
+    public void handleMiss_ShipAttackInProgress_IntentionIsHorizontalAndWest_InvokeSetShipDiscoveryCoordinatesToReset(){
+        int row = -1, col = -1;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(true);
+        Mockito.when(spyAIPlayer.attackIntentionIsWestAndHorizontal()).thenReturn(true);
+
+        spyAIPlayer.handleMiss();
+        verify(spyAIPlayer, times(1)).setShipDiscoveryCoordinates(row, col);
+    }
+
+    @Test
+    public void handleMiss_ShipAttackInProgress_IntentionIsNOTHorizontalAndWestNorVerticalAndSouth_DoNotInvokeSetShipDiscoveryCoordinatesToReset(){
+        int row = -1, col = -1;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(true);
+        Mockito.when(spyAIPlayer.attackIntentionIsWestAndHorizontal()).thenReturn(false);
+        Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(false);
+
+        spyAIPlayer.handleMiss();
+        verify(spyAIPlayer, never()).setShipDiscoveryCoordinates(row, col);
+    }
+    @Test
+    public void handleMiss_ShipAttackNotInProgress_IntentionIsHorizontalAndWest_DoNotInvokeSetShipDiscoveryCoordinatesToReset(){
+        int row = -1, col = -1;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(false);
+        Mockito.when(spyAIPlayer.attackIntentionIsWestAndHorizontal()).thenReturn(true);
+
+        spyAIPlayer.handleMiss();
+        verify(spyAIPlayer, never()).setShipDiscoveryCoordinates(row, col);
+    }
+    @Test
+    public void handleMiss_ShipAttackNotInProgress_IntentionIsVerticalAndSouth_DoNotInvokeSetShipDiscoveryCoordinatesToReset(){
+        int row = -1, col = -1;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(false);
+        Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+
+        spyAIPlayer.handleMiss();
         verify(spyAIPlayer, never()).setShipDiscoveryCoordinates(row, col);
     }
 }
