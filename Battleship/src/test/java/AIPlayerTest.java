@@ -1,8 +1,15 @@
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class AIPlayerTest {
     AIPlayer mockAIPlayer = new AIPlayer();
@@ -21,8 +28,10 @@ class AIPlayerTest {
         int col = 5;
         int row = 5;
         mockOpponent.bottomBoard.grid[row][col] = "Carrier";
+        mockAIPlayer.shipProbeInProgress = false;
         mockAIPlayer.attack(col, row, mockOpponent);
         int actual_col = mockAIPlayer.colOfShipDiscovery;
+        System.out.println(mockAIPlayer.lastResult);
         assertEquals(col, actual_col);
     }
     @Test
@@ -425,7 +434,7 @@ class AIPlayerTest {
     public void getSouthCoordinate_ReturnsUnchangedColumn(){
         int row = 5;
         int col = 5;
-        
+
         int expected = row-1;
         int actual = mockAIPlayer.getSouthCoordinate(row, col)[0];
         assertEquals(expected, actual);
@@ -501,5 +510,34 @@ class AIPlayerTest {
         int[] expected = new int[]{row,col};
         int[] actual = new int[]{mockAIPlayer.rowOfShipDiscovery, mockAIPlayer.colOfShipDiscovery};
         assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void handleAIAttack_LastAttackDidHit_InvokeHandleHit() {
+        int row = 5;
+        int col = 5;
+        mockOpponent.bottomBoard.grid[row][col] = "Hit";
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        spyAIPlayer.handleAIAttack(col, row, mockOpponent);
+        verify(spyAIPlayer, times(1)).handleHit(row, col);
+    }
+    @Test
+    public void handleAIAttack_LastAttackDidMiss_InvokeHandleMiss() {
+        int row = 5;
+        int col = 5;
+        mockOpponent.bottomBoard.grid[row][col] = "Miss";
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        spyAIPlayer.handleAIAttack(col, row, mockOpponent);
+        verify(spyAIPlayer, times(1)).handleMiss();
+    }
+    @Test
+    public void handleAIAttack_LastAttackIsNull_DoNotInvokeNeitherHandleMissNotHandleHit() {
+        int row = 5;
+        int col = 5;
+        mockOpponent.bottomBoard.grid[row][col] = null;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        spyAIPlayer.handleAIAttack(col, row, mockOpponent);
+        verify(spyAIPlayer, never()).handleMiss();
+        verify(spyAIPlayer, never()).handleHit(row, col);
     }
 }

@@ -49,7 +49,7 @@ public class AIPlayer extends Player {
     }
 
     public void handleAIAttack(int col, int row, Player targetPlayer) {
-        this.lastResult = targetPlayer.bottomBoard.grid[row][col];
+        this.storeLastResult(row, col, targetPlayer);
         if (this.lastResult == "Hit") {
             this.handleHit(row, col);
         } else if (this.lastResult == "Miss") {
@@ -88,7 +88,12 @@ public class AIPlayer extends Player {
         }
         return res;
     }
-
+    public String getLastResult(){
+        return lastResult;
+    }
+    public void storeLastResult(int row, int col, Player targetPlayer){
+        this.lastResult = targetPlayer.bottomBoard.grid[row][col];
+    }
     public int[] getNorthCoordinate(int row, int col) {
         return new int[]{row + 1, col};
     }
