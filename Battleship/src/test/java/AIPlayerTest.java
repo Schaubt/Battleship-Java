@@ -657,7 +657,7 @@ class AIPlayerTest {
         verify(spyAIPlayer, times(1)).getRandomCoordinate();
     }
     @Test
-    public void getAttackCoordinate_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetRandomCoordinate(){
+    public void getAttackCoordinate_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetRandomCoordinate() {
         int row = 5, col = 5;
         mockAIPlayer.shipProbeInProgress = true;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
@@ -665,5 +665,56 @@ class AIPlayerTest {
         Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(false);
         spyAIPlayer.getAttackCoordinate(row, col);
         verify(spyAIPlayer, times(1)).getRandomCoordinate();
+    }
+
+    @Test
+    public void ShipAttackInProgress_ShipProbeNotInProgress_ShipDiscoveryCoordinatesExist_AttackOrientationIsntRandom_ReturnTrue(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertTrue(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_shipProbeInProgress_ReturnFalse(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = true;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_DiscoveryRowCoordinateDoesNotExist_ReturnFalse(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = -1;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_DiscoveryColCoordinateDoesNotExist_ReturnFalse(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = -1;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_attackOrientationIsRandom_ReturnFalse(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'r';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
     }
 }
