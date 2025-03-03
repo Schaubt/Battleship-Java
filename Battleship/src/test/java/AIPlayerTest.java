@@ -619,11 +619,12 @@ class AIPlayerTest {
         verify(spyAIPlayer, times(1)).getEastCoordinate(row, col);
     }
     @Test
-    public void getAttackCoordinate_ShipProbeInProgress_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetWestCoordinate(){
+    public void getAttackCoordinate_ShipAttackInProgress_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetWestCoordinate(){
         int row = 5, col = 5;
         mockAIPlayer.shipProbeInProgress = true;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         Mockito.when(spyAIPlayer.attackIntentionIsWestAndHorizontal()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(true);
         spyAIPlayer.getAttackCoordinate(row, col);
         verify(spyAIPlayer, times(1)).getWestCoordinate(row, col);
     }
@@ -636,12 +637,33 @@ class AIPlayerTest {
         verify(spyAIPlayer, times(1)).getNorthCoordinate(row, col);
     }
     @Test
-    public void getAttackCoordinate_AttackDirectionIsSouth_AttackOrientationIsVertical_InvokeGetSouthCoordinate(){
+    public void getAttackCoordinate_ShipAttackInProgress_AttackDirectionIsSouth_AttackOrientationIsVertical_InvokeGetSouthCoordinate(){
         int row = 5, col = 5;
         mockAIPlayer.shipProbeInProgress = true;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(true);
         spyAIPlayer.getAttackCoordinate(row, col);
         verify(spyAIPlayer, times(1)).getSouthCoordinate(row, col);
+    }
+    @Test
+    public void getAttackCoordinate_AttackDirectionIsSouth_AttackOrientationIsVertical_InvokeGetRandomCoordinate(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = true;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(false);
+        spyAIPlayer.getAttackCoordinate(row, col);
+        verify(spyAIPlayer, times(1)).getRandomCoordinate();
+    }
+    @Test
+    public void getAttackCoordinate_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetRandomCoordinate(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = true;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(false);
+        spyAIPlayer.getAttackCoordinate(row, col);
+        verify(spyAIPlayer, times(1)).getRandomCoordinate();
     }
 }
