@@ -157,27 +157,29 @@ public class AIPlayer extends Player {
     }
 
     public void determineAttackDirection() {
+        char dir = this.attackDirection;
         if (Objects.equals(this.lastResult, "Hit")) {
             if (!this.shipAttackInProgress()) {
-                setAttackDirection('n');
+                dir = 'n';
             }
         } else if (Objects.equals(this.lastResult, "Miss")) {
             if (this.shipProbeInProgress) {
-                switch (this.attackDirection) {
-                    case 'n' -> setAttackDirection('w');
-                    case 'w' -> setAttackDirection('s');
-                    case 's' -> setAttackDirection('e');
+                switch (dir) {
+                    case 'n' -> dir = 'w';
+                    case 'w' -> dir = 's';
+                    case 's' -> dir = 'e';
                 }
             } else if (this.shipAttackInProgress()) {
                 if (this.attackIntentionIsEastAndHorizontal()) {
-                    this.setAttackDirection('w');
+                    dir = 'w';
                 } else if (this.attackIntentionIsNorthAndVertical()) {
-                    this.setAttackDirection('s');
+                    dir = 's';
                 } else {
-                    this.setAttackDirection('r');
+                    dir = 'r';
                 }
             }
         }
+        setAttackDirection(dir);
     }
 
     public boolean shipAttackInProgress() {

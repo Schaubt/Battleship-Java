@@ -223,6 +223,48 @@ class AIPlayerTest {
         assertEquals(expected, actual);
     }
     @Test
+    public void AI_DetermineDirection_LastAttackDidMiss_HorizontalEnemyShipDiscovered_AttackDirectionEast_setDirectionToWest() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        mockAIPlayer.attackDirection = 'e';
+        mockAIPlayer.lastResult = "Miss";
+        char expected = 'w';
+        mockAIPlayer.determineAttackDirection();
+        char actual = mockAIPlayer.attackDirection;
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineDirection_LastAttackDidMiss_HorizontalEnemyShipDiscovered_AttackDirectionWest_setDirectionToRandom() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        mockAIPlayer.attackDirection = 'w';
+        mockAIPlayer.lastResult = "Miss";
+        char expected = 'r';
+        mockAIPlayer.determineAttackDirection();
+        char actual = mockAIPlayer.attackDirection;
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineDirection_LastAttackDidMiss_VerticalEnemyShipDiscovered_AttackDirectionSouth_setDirectionToRandom() {
+        int col = 5;
+        int row = 5;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.lastResult = "Miss";
+        char expected = 'r';
+        mockAIPlayer.determineAttackDirection();
+        char actual = mockAIPlayer.attackDirection;
+        assertEquals(expected, actual);
+    }
+    @Test
     public void set_discovery_coordinates_to_match_argument_row(){
         int expected = 5;
         int col = 7;
