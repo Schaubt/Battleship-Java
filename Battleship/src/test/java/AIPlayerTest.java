@@ -528,7 +528,7 @@ class AIPlayerTest {
     public void handleAIAttack_LastAttackIsNull_DoNotInvokeNeitherHandleMissNotHandleHit() {
         int row = 5;
         int col = 5;
-        mockOpponent.bottomBoard.grid[row][col] = null;
+        mockOpponent.bottomBoard.grid[row][col] = "@";
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         spyAIPlayer.handleAIAttack(col, row, mockOpponent);
         verify(spyAIPlayer, never()).handleMiss();
