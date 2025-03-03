@@ -211,13 +211,51 @@ class AIPlayerTest {
     @Test
     public void AI_DetermineDirection_LastAttackDidMiss_VerticalEnemyShipDiscovered_AttackingNorth_setDirectionToSouth() {
         int col = 5;
-        int row = 5;
-        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.rowOfShipDiscovery = 5;
         mockAIPlayer.colOfShipDiscovery = col;
         mockAIPlayer.attackOrientation = 'v';
         mockAIPlayer.attackDirection = 'n';
         mockAIPlayer.lastResult = "Miss";
         char expected = 's';
+        mockAIPlayer.determineAttackDirection();
+        char actual = mockAIPlayer.attackDirection;
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineDirection_LastAttackDidMiss_HorizontalEnemyShipDiscovered_AttackDirectionEast_setDirectionToWest() {
+        int col = 5;
+        mockAIPlayer.rowOfShipDiscovery = 5;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        mockAIPlayer.attackDirection = 'e';
+        mockAIPlayer.lastResult = "Miss";
+        char expected = 'w';
+        mockAIPlayer.determineAttackDirection();
+        char actual = mockAIPlayer.attackDirection;
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineDirection_LastAttackDidMiss_HorizontalEnemyShipDiscovered_AttackDirectionWest_setDirectionToRandom() {
+        int col = 5;
+        mockAIPlayer.rowOfShipDiscovery = 5;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        mockAIPlayer.attackDirection = 'w';
+        mockAIPlayer.lastResult = "Miss";
+        char expected = 'r';
+        mockAIPlayer.determineAttackDirection();
+        char actual = mockAIPlayer.attackDirection;
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void AI_DetermineDirection_LastAttackDidMiss_VerticalEnemyShipDiscovered_AttackDirectionSouth_setDirectionToRandom() {
+        int col = 5;
+        mockAIPlayer.rowOfShipDiscovery = 5;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'v';
+        mockAIPlayer.attackDirection = 's';
+        mockAIPlayer.lastResult = "Miss";
+        char expected = 'r';
         mockAIPlayer.determineAttackDirection();
         char actual = mockAIPlayer.attackDirection;
         assertEquals(expected, actual);
@@ -411,9 +449,8 @@ class AIPlayerTest {
     public void getNorthCoordinate_ReturnsUnchangedColumn(){
         int row = 5;
         int col = 5;
-        int expected = col;
         int actual = mockAIPlayer.getNorthCoordinate(row, col)[1];
-        assertEquals(expected, actual);
+        assertEquals(col, actual);
     }
     @Test
     public void getSouthCoordinate_ReturnsDecrementedRow(){
@@ -477,7 +514,7 @@ class AIPlayerTest {
         assertArrayEquals(expected, actual);
     }
     @Test
-    public void handleMiss_ShipAttackNotInProgress_attackIntentionIsSouthAndVertical_DontChangeDiscoveryCoordinates(){
+    public void handleMiss_ShipAttackNotInProgress_attackIntentionIsSouthAndVertical_DoNotChangeDiscoveryCoordinates(){
         int row = 5;
         int col = 5;
         mockAIPlayer.attackDirection = 's';
@@ -491,7 +528,7 @@ class AIPlayerTest {
         assertArrayEquals(expected, actual);
     }
     @Test
-    public void handleMiss_ShipAttackInProgress_attackIntentionIsNOYSouthAndVerticalOr_WestAndHorizontal_DontChangeDiscoveryCoordinates(){
+    public void handleMiss_ShipAttackInProgress_attackIntentionIsNOYSouthAndVerticalOr_WestAndHorizontal_DoNotChangeDiscoveryCoordinates(){
         int row = 5;
         int col = 5;
         mockAIPlayer.attackDirection = 'n';
@@ -611,7 +648,8 @@ class AIPlayerTest {
         verify(spyAIPlayer, never()).setShipDiscoveryCoordinates(row, col);
     }
     @Test
-    public void getAttackCoordinate_AttackDirectionIsEast_AttackOrientationIsHorizontal_InvokegetEastCoordinate(){
+    public void getAttackCoordinate_AttackDirectionIsEast_AttackOrientationIsHorizontal_InvokeGetEastCoordinate(){
+
         int row = 5, col = 5;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         Mockito.when(spyAIPlayer.attackIntentionIsEastAndHorizontal()).thenReturn(true);
@@ -619,11 +657,13 @@ class AIPlayerTest {
         verify(spyAIPlayer, times(1)).getEastCoordinate(row, col);
     }
     @Test
-    public void getAttackCoordinate_ShipProbeInProgress_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetWestCoordinate(){
+    public void getAttackCoordinate_ShipAttackInProgress_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetWestCoordinate(){
+
         int row = 5, col = 5;
         mockAIPlayer.shipProbeInProgress = true;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         Mockito.when(spyAIPlayer.attackIntentionIsWestAndHorizontal()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(true);
         spyAIPlayer.getAttackCoordinate(row, col);
         verify(spyAIPlayer, times(1)).getWestCoordinate(row, col);
     }
@@ -636,12 +676,84 @@ class AIPlayerTest {
         verify(spyAIPlayer, times(1)).getNorthCoordinate(row, col);
     }
     @Test
-    public void getAttackCoordinate_AttackDirectionIsSouth_AttackOrientationIsVertical_InvokeGetSouthCoordinate(){
+    public void getAttackCoordinate_ShipAttackInProgress_AttackDirectionIsSouth_AttackOrientationIsVertical_InvokeGetSouthCoordinate(){
         int row = 5, col = 5;
         mockAIPlayer.shipProbeInProgress = true;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(true);
         spyAIPlayer.getAttackCoordinate(row, col);
         verify(spyAIPlayer, times(1)).getSouthCoordinate(row, col);
+    }
+    @Test
+    public void getAttackCoordinate_AttackDirectionIsSouth_AttackOrientationIsVertical_InvokeGetRandomCoordinate(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = true;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(false);
+        spyAIPlayer.getAttackCoordinate(row, col);
+        verify(spyAIPlayer, times(1)).getRandomCoordinate();
+    }
+    @Test
+    public void getAttackCoordinate_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetRandomCoordinate() {
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = true;
+        AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
+        Mockito.when(spyAIPlayer.attackIntentionIsSouthAndVertical()).thenReturn(true);
+        Mockito.when(spyAIPlayer.shipAttackInProgress()).thenReturn(false);
+        spyAIPlayer.getAttackCoordinate(row, col);
+        verify(spyAIPlayer, times(1)).getRandomCoordinate();
+    }
+
+    @Test
+    public void ShipAttackInProgress_ShipProbeNotInProgress_ShipDiscoveryCoordinatesExist_AttackOrientationIsNotRandom_ReturnTrue(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertTrue(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_shipProbeInProgress_ReturnFalse(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = true;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_DiscoveryRowCoordinateDoesNotExist_ReturnFalse(){
+        int col = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = -1;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_DiscoveryColCoordinateDoesNotExist_ReturnFalse(){
+        int row = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = -1;
+        mockAIPlayer.attackOrientation = 'h';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
+    }
+    @Test
+    public void ShipAttackInProgress_attackOrientationIsRandom_ReturnFalse(){
+        int row = 5, col = 5;
+        mockAIPlayer.shipProbeInProgress = false;
+        mockAIPlayer.rowOfShipDiscovery = row;
+        mockAIPlayer.colOfShipDiscovery = col;
+        mockAIPlayer.attackOrientation = 'r';
+        boolean actual = mockAIPlayer.shipAttackInProgress();
+        assertFalse(actual);
     }
 }

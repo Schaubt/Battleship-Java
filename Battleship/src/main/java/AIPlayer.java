@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class AIPlayer extends Player {
@@ -12,8 +10,6 @@ public class AIPlayer extends Player {
     int rowOfLastAttack;
     int colOfLastAttack;
     String lastResult;
-    List<String> HitMissHistory = new ArrayList<>();
-    boolean shipDiscovered;
 
     public AIPlayer() {
         super(true);
@@ -72,12 +68,9 @@ public class AIPlayer extends Player {
 
     public int[] getAttackCoordinate(int row, int col) {
         int[] res = new int[2];
-        //TODO: FIX THIS SO THAT AFTER MISSING A COORDINATE NORTH OR EAST OF DISCOVERY, getRandomCoordinate() IS INVOKED
-        /* if (this.shipAttackInProgress() && ((this.attackIntentionIsWestAndHorizontal() && (this.topBoard.grid[this.rowOfShipDiscovery][this.colOfShipDiscovery-1] != null)) || (this.attackIntentionIsSouthAndVertical() && (this.topBoard.grid[this.rowOfShipDiscovery-1][this.colOfShipDiscovery] != null)))) {
+         if (!this.shipAttackInProgress() && ((this.attackIntentionIsWestAndHorizontal()) || (this.attackIntentionIsSouthAndVertical()))) {
             res = this.getRandomCoordinate();
-        }
-        */
-        if (this.attackIntentionIsEastAndHorizontal()) {
+        } else if (this.attackIntentionIsEastAndHorizontal()) {
             res = this.getEastCoordinate(row, col);
         } else if (this.attackIntentionIsWestAndHorizontal()) {
             res = this.getWestCoordinate(row, col);
@@ -160,27 +153,29 @@ public class AIPlayer extends Player {
     }
 
     public void determineAttackDirection() {
+        char dir = this.attackDirection;
         if (Objects.equals(this.lastResult, "Hit")) {
             if (!this.shipAttackInProgress()) {
-                setAttackDirection('n');
+                dir = 'n';
             }
         } else if (Objects.equals(this.lastResult, "Miss")) {
             if (this.shipProbeInProgress) {
-                switch (this.attackDirection) {
-                    case 'n' -> setAttackDirection('w');
-                    case 'w' -> setAttackDirection('s');
-                    case 's' -> setAttackDirection('e');
+                switch (dir) {
+                    case 'n' -> dir = 'w';
+                    case 'w' -> dir = 's';
+                    case 's' -> dir = 'e';
                 }
             } else if (this.shipAttackInProgress()) {
                 if (this.attackIntentionIsEastAndHorizontal()) {
-                    this.setAttackDirection('w');
+                    dir = 'w';
                 } else if (this.attackIntentionIsNorthAndVertical()) {
-                    this.setAttackDirection('s');
+                    dir = 's';
                 } else {
-                    this.setAttackDirection('r');
+                    dir = 'r';
                 }
             }
         }
+        setAttackDirection(dir);
     }
 
     public boolean shipAttackInProgress() {
