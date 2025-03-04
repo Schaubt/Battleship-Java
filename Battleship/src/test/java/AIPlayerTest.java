@@ -649,6 +649,7 @@ class AIPlayerTest {
     }
     @Test
     public void getAttackCoordinate_AttackDirectionIsEast_AttackOrientationIsHorizontal_InvokeGetEastCoordinate(){
+
         int row = 5, col = 5;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
         Mockito.when(spyAIPlayer.attackIntentionIsEastAndHorizontal()).thenReturn(true);
@@ -657,6 +658,7 @@ class AIPlayerTest {
     }
     @Test
     public void getAttackCoordinate_ShipAttackInProgress_AttackDirectionIsWest_AttackOrientationIsHorizontal_InvokeGetWestCoordinate(){
+
         int row = 5, col = 5;
         mockAIPlayer.shipProbeInProgress = true;
         AIPlayer spyAIPlayer = Mockito.spy(mockAIPlayer);
