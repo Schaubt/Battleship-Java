@@ -105,7 +105,7 @@ public class Board {
             System.out.println("Error: Placing a ship here causes it to overflow off the board.");
             return false;
         }
-        for(int i=0; i < coords.size(); i++){
+        for(int i=0; i < coords.size()-1; i++){
             if(!coordIsAvailable(coords.get(i).get("row"), coords.get(i).get("col"))){
                 System.out.println("Error: Placing a ship here overlaps another.");
                 return false;

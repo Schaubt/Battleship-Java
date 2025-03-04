@@ -22,7 +22,7 @@ class SetUpPhaseTest {
         ByteArrayInputStream in = new ByteArrayInputStream(mockInput.getBytes());
         System.setIn(in);
 
-        UserInput userInput = setUpPhase.getUserInput(in);
+        Input userInput = setUpPhase.getUserInput(in);
         int expected = mockRowNum;
         int actual = userInput.getRowNum();
         assertEquals(expected,actual);
@@ -35,7 +35,7 @@ class SetUpPhaseTest {
         ByteArrayInputStream in = new ByteArrayInputStream(mockInput.getBytes());
         System.setIn(in);
 
-        UserInput userInput = setUpPhase.getUserInput(in);
+        Input userInput = setUpPhase.getUserInput(in);
         int expected = mockColNum;
         int actual = userInput.getColNum();
         assertEquals(expected,actual);
@@ -48,7 +48,7 @@ class SetUpPhaseTest {
         ByteArrayInputStream in = new ByteArrayInputStream(mockInput.getBytes());
         System.setIn(in);
 
-        UserInput userInput = setUpPhase.getUserInput(in);
+        Input userInput = setUpPhase.getUserInput(in);
         int expected = mockOrientation;
         int actual = userInput.getOrientation();
         assertEquals(expected,actual);
@@ -61,7 +61,7 @@ class SetUpPhaseTest {
         ByteArrayInputStream in = new ByteArrayInputStream(mockInput.getBytes());
         System.setIn(in);
 
-        UserInput userInput = setUpPhase.getUserInput(in);
+        Input userInput = setUpPhase.getUserInput(in);
         int expected = mockOrientation;
         int actual = userInput.getOrientation();
         assertEquals(expected,actual);

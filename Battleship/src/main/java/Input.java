@@ -1,13 +1,13 @@
-public class UserInput {
+public class Input {
     private int rowNum;
     private int colNum;
     private char orientation;
-    public UserInput(int rowNum, int colNum, char orientation){
+    public Input(int rowNum, int colNum, char orientation){
         this.rowNum = rowNum;
         this.colNum = colNum;
         this.orientation = orientation;
     }
-    public UserInput(int rowNum, int colNum) {
+    public Input(int rowNum, int colNum) {
         this.rowNum = rowNum;
         this.colNum = colNum;
     }
