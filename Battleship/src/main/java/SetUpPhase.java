@@ -16,6 +16,7 @@ public class SetUpPhase extends Phase {
         super(game);
     }
 
+    @Override
     public void execute(Player player1, Player player2) {
         Player[] players = {player1, player2};
         List<Map<String, Integer>> shipCoordinates;
@@ -26,18 +27,13 @@ public class SetUpPhase extends Phase {
         for (Player player : players) {
             for (Ship ship : ships) {
                 do {
+                    Input playerInput;
                     if (!player.isComputer) {
-                        System.out.println("Enter row (A-Z), column, and orientation (h or v)");
-                        UserInput userInput = this.getUserInput(System.in);
-                        row = userInput.getRowNum();
-                        col = userInput.getColNum();
-                        orientation = userInput.getOrientation();
+                        playerInput = this.getUserInput(System.in);
                     } else {
-                        row = (int) (Math.random() * 10);
-                        col = (int) (Math.random() * 10);
-                        orientation = Math.random() < 0.5 ? 'v' : 'h';
+                        playerInput = this.getAiInput();
                     }
-                    shipCoordinates = player.bottomBoard.calcShipPlacementCoordinates(row, col, ship.size, orientation);
+                    shipCoordinates = getShipPlacementCoords(playerInput, player, ship);
                     placemenIsValid = player.bottomBoard.validateShipPlacement(shipCoordinates);
 
                     if (!placemenIsValid && !player.isComputer) {
@@ -47,16 +43,30 @@ public class SetUpPhase extends Phase {
                 ship.setCoordinates(shipCoordinates);
                 player.placeShip(ship);
             }
+        }
+
     }
 
-}
-
-    public UserInput getUserInput(InputStream in) {
+    public Input getUserInput(InputStream in) {
+        System.out.println("Enter row (A-Z), column, and orientation (h or v)");
         Scanner scanner = new Scanner(in);
         scanner.useDelimiter(",\\s*");
         int rowNum = scanner.nextInt();
         int colNum = scanner.nextInt();
         char orientation = scanner.next().charAt(0);
-        return new UserInput(rowNum, colNum, orientation);
+        return new Input(rowNum, colNum, orientation);
+    }
+
+    public Input getAiInput() {
+        int rowNum = (int) (Math.random() * 10);
+        int colNum = (int) (Math.random() * 10);
+        char orientation = Math.random() < 0.5 ? 'v' : 'h';
+        return new Input(rowNum, colNum, orientation);
+    }
+    public List<Map<String, Integer>> getShipPlacementCoords(Input input, Player player, Ship ship){
+        int row = input.getRowNum();
+        int col = input.getColNum();
+        char orientation = input.getOrientation();
+        return player.bottomBoard.calcShipPlacementCoordinates(row, col, ship.size, orientation);
     }
 }

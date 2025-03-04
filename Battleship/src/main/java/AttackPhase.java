@@ -11,11 +11,11 @@ public class AttackPhase extends Phase {
 
     }
 
-    public UserInput getUserInput(InputStream in) {
+    public Input getUserInput(InputStream in) {
         Scanner scanner = new Scanner(in);
         scanner.useDelimiter(",\\s*");
         int rowNum = scanner.nextInt();
         int colNum = scanner.nextInt();
-        return new UserInput(rowNum, colNum);
+        return new Input(rowNum, colNum);
     }
 }
