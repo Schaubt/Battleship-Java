@@ -39,4 +39,13 @@ class ShipTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void setCoordinates_SetOccupiedCoordinatesAsIntended(){
+        Ship mockShip = new Ship(mockName, mockSize);
+        mockShip.setCoordinates(mockOccupiedCoordinates);
+        List<Map<String, Integer>> expected = mockOccupiedCoordinates;
+        List<Map<String, Integer>> actual = mockShip.occupiedCoordinates;
+        assertEquals(expected, actual);
+    }
+
 }
