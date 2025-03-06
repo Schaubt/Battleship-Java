@@ -160,7 +160,7 @@ class BoardTest {
     @Test
     public void A_row_inside_boards_range_is_valid(){
         int maxBoardRow = mockBoard.grid.length-1;
-        int mockCol = 0;
+        int mockCol = 1;
         int mockRow = (maxBoardRow / 2);
         boolean actual = mockBoard.coordInBounds(mockRow, mockCol);
         assertTrue(actual);
@@ -169,7 +169,7 @@ class BoardTest {
     public void A_column_inside_boards_range_is_valid(){
         int maxBoardCol = mockBoard.grid[0].length-1;
         int mockCol = maxBoardCol / 2;
-        int mockRow = 0;
+        int mockRow = 1;
         boolean actual = mockBoard.coordInBounds(mockRow, mockCol);
         assertTrue(actual);
     }
@@ -194,8 +194,8 @@ class BoardTest {
     }
     @Test
     public void Ship_does_not_overflow_off_board_returns_false(){
-        int mockRow = 0;
-        int mockCol = 0;
+        int mockRow = 1;
+        int mockCol = 1;
         List<Map<String, Integer>> mockCoordinates = mockBoard.calcShipPlacementCoordinates(mockRow,mockCol,mockSize, mockOrientation);
         boolean actual = mockBoard.shipOverflowsOffBoard(mockCoordinates);
         assertFalse(actual);

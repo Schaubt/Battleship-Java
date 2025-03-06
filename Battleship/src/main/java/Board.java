@@ -7,8 +7,8 @@ public class Board {
     String[][] grid;
     char[][] displayGrid;
     public Board(){
-        this.grid = new String[10][10];
-        this.displayGrid = new char[10][10];
+        this.grid = new String[11][11];
+        this.displayGrid = new char[11][11];
     }
     public void updateCell(int row, int col, String value){
         this.grid[row][col] = value;
@@ -19,8 +19,8 @@ public class Board {
     public void generateDisplayGrid() {
         int numOfCols = this.grid[0].length;
         int numOfRows = this.grid.length;
-        for (int i = 0; i < numOfRows; i++) {
-            for (int j = 0; j < numOfCols; j++) {
+        for (int i = 1; i < numOfRows; i++) {
+            for (int j = 1; j < numOfCols; j++) {
                 switch (this.grid[i][j]) {
                     case null -> this.displayGrid[i][j] = 'O';
                     case "Hit" -> this.displayGrid[i][j] = 'X';
@@ -32,8 +32,8 @@ public class Board {
     }
     public void printDisplayGrid(){
         int numOfCols = this.grid[0].length;
-        for(int i=0; i < this.displayGrid.length; i++){
-            for (int j = 0; j < numOfCols; j++) {
+        for(int i=1; i < this.displayGrid.length; i++){
+            for (int j = 1; j < numOfCols; j++) {
                 System.out.print(this.displayGrid[i][j] + " ");
             }
             System.out.println();
@@ -42,7 +42,7 @@ public class Board {
     public void display(){
         int numOfCols = this.grid[0].length;
         for (String[] strings : this.grid) {
-            for (int j = 0; j < numOfCols; j++) {
+            for (int j = 1; j < numOfCols; j++) {
                 switch (strings[j]) {
                     case null -> System.out.print("O");
                     case "Hit" -> System.out.print("X");
@@ -83,10 +83,10 @@ public class Board {
         }
     }
     public boolean coordInBounds(int row, int col){
-        if (row < 0 || col <0) {
+        if (row <= 0 || col <= 0) {
             return false;
         }
-        else if (row>this.grid.length || col>this.grid[0].length){
+        else if (row >= this.grid.length || col>=this.grid[0].length){
             return false;
         }
         return true;
@@ -112,5 +112,8 @@ public class Board {
             }
         }
         return true;
+    }
+    public String[][] getGrid(){
+        return this.grid;
     }
 }
