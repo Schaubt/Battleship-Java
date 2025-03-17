@@ -54,4 +54,7 @@ public abstract class Player {
     public boolean isComputer() {
         return this.isComputer;
     }
+    public boolean allShipsDestroyed(){
+        return shipsAlive.isEmpty();
+    }
 }
