@@ -79,6 +79,23 @@ class AttackPhaseTest {
     }
 
     @Test
-    public void executeAttackPhase_NeitherPlayersHaveShips_EndAttackPhase() {
+    public void executeAttackPhase_PlayersOneHasShipsAlive_EndAttackPhase() {
+        InputStream sysInBackup = System.in; // backup System.in to restore it later
+        ByteArrayInputStream in = new ByteArrayInputStream(mockInput.getBytes());
+        System.setIn(in);
+
+        AttackPhase spyAttackPhase = Mockito.spy(attackPhase);
+
+        Player spyPlayer1 = Mockito.spy(humanPlayer);
+        spyPlayer1.bottomBoard = Mockito.spy(humanPlayer.bottomBoard);
+
+        AIPlayer spyPlayer2 = Mockito.spy(AIPlayer);
+        spyPlayer2.bottomBoard = Mockito.spy(AIPlayer.bottomBoard);
+
+        Mockito.when(spyPlayer1.allShipsDestroyed()).thenReturn(true);
+        Mockito.when(spyPlayer2.allShipsDestroyed()).thenReturn(false, false);
+        spyAttackPhase.execute(spyPlayer1, spyPlayer2);
+        //verify(spyPlayer2).determineAttackCoordinate();
+        System.setIn(sysInBackup);
     }
 }
