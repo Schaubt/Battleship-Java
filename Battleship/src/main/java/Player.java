@@ -51,4 +51,10 @@ public abstract class Player {
         this.shipsAlive.put(ship.name, ship);
     }
     //public void removeShip(int row, int col, String orientation){}
+    public boolean isComputer() {
+        return this.isComputer;
+    }
+    public boolean allShipsDestroyed(){
+        return shipsAlive.isEmpty();
+    }
 }

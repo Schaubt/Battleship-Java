@@ -58,8 +58,8 @@ public class SetUpPhase extends Phase {
     }
 
     public Input getAiInput() {
-        int rowNum = (int) (Math.random() * 10);
-        int colNum = (int) (Math.random() * 10);
+        int rowNum = (int) (Math.random() * 10) + 1;
+        int colNum = (int) (Math.random() * 10) + 1;
         char orientation = Math.random() < 0.5 ? 'v' : 'h';
         return new Input(rowNum, colNum, orientation);
     }
