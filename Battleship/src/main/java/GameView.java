@@ -22,6 +22,7 @@ class GameView extends VBox {
             new Ship("Patrol Boat", 2)
     };
     private char orientation = 'h'; // Default orientation
+    String orientationString = "horizontal";
 
     public GameView(Main main) {
         this.game = main.getGame();
@@ -38,10 +39,11 @@ class GameView extends VBox {
         getChildren().addAll(label, orientationToggle, gameBoard);
     }
     public Button OrientationToggleButton(){
-        Button btn = new Button("Toggle Orientation (H/V)");
+        Button btn = new Button("Toggle Orientation: " + orientationString);
         btn.setOnAction(e -> {
             orientation = (orientation == 'h') ? 'v' : 'h';
-            btn.setText("Orientation: " + orientation);
+            orientationString = (orientation == 'h') ? "horizontal" : "vertical";
+            btn.setText("Orientation: " + orientationString);
         });
         return btn;
     }
