@@ -11,7 +11,8 @@ import java.util.Map;
 class GameView extends VBox {
     private GridPane gridPane;
     private Game game;
-    private Player player;
+    private HumanPlayer player;
+    private AIPlayer player2;
     private int shipIndex = 0;
     Button[][] grid;
     private static final Ship[] ships = {
@@ -122,5 +123,66 @@ class GameView extends VBox {
         } else {
             System.out.println("Invalid ship placement. Try again.");
         }
+    }
+
+    public GridPane createAttackPhaseBottomGameBoard(){
+        grid = new Button[11][11];
+
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
+
+        for(int row=1 ; row<11 ; row++){
+            for(int col=1 ; col<11 ; col++){
+                Button btn = new Button();
+                btn.setMinSize(20,20);
+                btn.setMaxSize(20,20);
+
+                int r = row, c = col;
+                btn.setOnAction(e -> handleAttackPhaseGridClick(r, c, btn));
+
+                grid[r][c] = btn;
+                gridPane.add(grid[row][col], col, row);
+            }
+        }
+        return gridPane;
+    }
+
+    public GridPane createAttackPhaseTopGameBoard(){
+        grid = new Button[11][11];
+
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
+
+        for(int row=1 ; row<11 ; row++){
+            for(int col=1 ; col<11 ; col++){
+                Button btn = new Button();
+                btn.setMinSize(20,20);
+                btn.setMaxSize(20,20);
+
+                int r = row, c = col;
+                //btn.setOnAction(e -> handleGridClick(r, c, btn));
+
+                grid[r][c] = btn;
+                gridPane.add(grid[row][col], col, row);
+            }
+        }
+        return gridPane;
+    }
+
+    private void handleAttackPhaseGridClick(int row, int col, Button clickedButton) {
+        player.attack(row, col, player2);
+    }
+
+    public void reloadWithNewComponents() {
+        this.getChildren().clear();
+
+        Label newLabel = new Label("");
+        GridPane newGrid = createBottomGameBoard();
+
+        this.getChildren().addAll(newLabel, newGrid);
     }
 }
