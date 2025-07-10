@@ -34,9 +34,10 @@ class GameView extends VBox {
 
         Button orientationToggle = OrientationToggleButton();
 
-        GridPane gameBoard = createGameBoard();
+        GridPane topGameBoard = createTopGameBoard();
+        GridPane bottomGameBoard = createBottomGameBoard();
 
-        getChildren().addAll(label, orientationToggle, gameBoard);
+        getChildren().addAll(label, orientationToggle, topGameBoard, bottomGameBoard);
     }
     public Button OrientationToggleButton(){
         Button btn = new Button("Toggle Orientation: " + orientationString);
@@ -47,7 +48,7 @@ class GameView extends VBox {
         });
         return btn;
     }
-    public GridPane createGameBoard(){
+    public GridPane createBottomGameBoard(){
         grid = new Button[11][11];
 
         GridPane gridPane = new GridPane();
@@ -63,6 +64,30 @@ class GameView extends VBox {
 
                 int r = row, c = col;
                 btn.setOnAction(e -> handleGridClick(r, c, btn));
+
+                grid[r][c] = btn;
+                gridPane.add(grid[row][col], col, row);
+            }
+        }
+        return gridPane;
+    }
+
+    public GridPane createTopGameBoard(){
+        grid = new Button[11][11];
+
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
+
+        for(int row=1 ; row<11 ; row++){
+            for(int col=1 ; col<11 ; col++){
+                Button btn = new Button();
+                btn.setMinSize(20,20);
+                btn.setMaxSize(20,20);
+
+                int r = row, c = col;
+                //btn.setOnAction(e -> handleGridClick(r, c, btn));
 
                 grid[r][c] = btn;
                 gridPane.add(grid[row][col], col, row);
