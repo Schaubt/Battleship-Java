@@ -83,10 +83,10 @@ public class Board {
         }
     }
     public boolean coordInBounds(int row, int col){
-        if (row <= 0 || col <= 0) {
+        if (row < 0 || col < 0) {
             return false;
         }
-        else if (row >= this.grid.length || col>=this.grid[0].length){
+        else if (row >= this.grid.length+1 || col>=this.grid[0].length+1){
             return false;
         }
         return true;
@@ -105,7 +105,7 @@ public class Board {
             System.out.println("Error: Placing a ship here causes it to overflow off the board.");
             return false;
         }
-        for(int i=0; i < coords.size()-1; i++){
+        for(int i=1; i < coords.size(); i++){
             if(!coordIsAvailable(coords.get(i).get("row"), coords.get(i).get("col"))){
                 System.out.println("Error: Placing a ship here overlaps another.");
                 return false;

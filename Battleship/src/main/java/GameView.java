@@ -46,15 +46,15 @@ class GameView extends VBox {
         return btn;
     }
     public GridPane createGameBoard(){
-        grid = new Button[10][10];
+        grid = new Button[11][11];
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(5);
         gridPane.setVgap(5);
 
-        for(int row=0 ; row<10 ; row++){
-            for(int col=0 ; col<10 ; col++){
+        for(int row=1 ; row<11 ; row++){
+            for(int col=1 ; col<11 ; col++){
                 Button btn = new Button();
                 btn.setMinSize(20,20);
                 btn.setMaxSize(20,20);
@@ -73,18 +73,18 @@ class GameView extends VBox {
         if (shipIndex >= ships.length) return;
         Ship currentShip = ships[shipIndex];
         List<Map<String, Integer>> coords = player.bottomBoard.calcShipPlacementCoordinates(row, col, currentShip.size, orientation);
-
+        System.out.println(coords);
         if (player.bottomBoard.validateShipPlacement(coords)) {
             currentShip.setCoordinates(coords);
             player.placeShip(currentShip);
 
-            // Change color of occupied spaces to green
+            // Change color of occupied spaces
             for (Map<String, Integer> point : coords) {
                 int r = point.get("row");
                 int c = point.get("col");
 
                 Button btn = grid[r][c];
-                btn.setStyle("-fx-background-color: green;");
+                btn.setStyle("-fx-background-color: #878787;");
             }
             shipIndex++;
 
