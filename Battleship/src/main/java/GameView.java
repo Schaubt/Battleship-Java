@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 class GameView extends VBox {
     private GridPane gridPane;
@@ -14,7 +15,9 @@ class GameView extends VBox {
     private HumanPlayer player;
     private AIPlayer player2;
     private int shipIndex = 0;
-    Button[][] grid;
+    Button[][] topGrid;
+    Button[][] bottomGrid;
+    SetUpPhase setUpPhase;
     private static final Ship[] ships = {
             new Ship("Carrier", 5),
             new Ship("Battleship", 4),
@@ -27,7 +30,9 @@ class GameView extends VBox {
 
     public GameView(Main main) {
         this.game = main.getGame();
+        this.setUpPhase = new SetUpPhase(game);
         this.player = new HumanPlayer();
+        this.player2 = new AIPlayer();
         this.setAlignment(Pos.CENTER);
         this.setSpacing(10);
 
@@ -50,7 +55,7 @@ class GameView extends VBox {
         return btn;
     }
     public GridPane createBottomGameBoard(){
-        grid = new Button[11][11];
+        bottomGrid = new Button[11][11];
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -66,15 +71,15 @@ class GameView extends VBox {
                 int r = row, c = col;
                 btn.setOnAction(e -> handleGridClick(r, c, btn));
 
-                grid[r][c] = btn;
-                gridPane.add(grid[row][col], col, row);
+                bottomGrid[r][c] = btn;
+                gridPane.add(bottomGrid[row][col], col, row);
             }
         }
         return gridPane;
     }
 
     public GridPane createTopGameBoard(){
-        grid = new Button[11][11];
+        topGrid = new Button[11][11];
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -90,8 +95,8 @@ class GameView extends VBox {
                 int r = row, c = col;
                 //btn.setOnAction(e -> handleGridClick(r, c, btn));
 
-                grid[r][c] = btn;
-                gridPane.add(grid[row][col], col, row);
+                topGrid[r][c] = btn;
+                gridPane.add(topGrid[row][col], col, row);
             }
         }
         return gridPane;
@@ -111,14 +116,15 @@ class GameView extends VBox {
                 int r = point.get("row");
                 int c = point.get("col");
 
-                Button btn = grid[r][c];
+                Button btn = bottomGrid[r][c];
                 btn.setStyle("-fx-background-color: #878787;");
             }
             shipIndex++;
 
             if (shipIndex >= ships.length) {
                 System.out.println("All ships placed! Ready to start playing.");
-                //game.nextphase placeholder
+                this.setUpPhase.setAIPlayerShips(player2);
+                reloadWithNewComponents();
             }
         } else {
             System.out.println("Invalid ship placement. Try again.");
@@ -126,7 +132,33 @@ class GameView extends VBox {
     }
 
     public GridPane createAttackPhaseBottomGameBoard(){
-        grid = new Button[11][11];
+        bottomGrid = new Button[11][11];
+
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
+
+        for(int row=1 ; row<11 ; row++){
+            for(int col=1 ; col<11 ; col++){
+                Button btn = new Button();
+                btn.setMinSize(20,20);
+                btn.setMaxSize(20,20);
+
+                int r = row, c = col;
+                //btn.setOnAction(e -> handleAttackPhaseGridClick(r, c, btn));
+                if(!player.bottomBoard.coordIsAvailable(r, c)){
+                    btn.setStyle("-fx-background-color: #878787;");
+                }
+                bottomGrid[r][c] = btn;
+                gridPane.add(bottomGrid[row][col], col, row);
+            }
+        }
+        return gridPane;
+    }
+
+    public GridPane createAttackPhaseTopGameBoard(){
+        topGrid = new Button[11][11];
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -142,47 +174,32 @@ class GameView extends VBox {
                 int r = row, c = col;
                 btn.setOnAction(e -> handleAttackPhaseGridClick(r, c, btn));
 
-                grid[r][c] = btn;
-                gridPane.add(grid[row][col], col, row);
-            }
-        }
-        return gridPane;
-    }
-
-    public GridPane createAttackPhaseTopGameBoard(){
-        grid = new Button[11][11];
-
-        GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(5);
-        gridPane.setVgap(5);
-
-        for(int row=1 ; row<11 ; row++){
-            for(int col=1 ; col<11 ; col++){
-                Button btn = new Button();
-                btn.setMinSize(20,20);
-                btn.setMaxSize(20,20);
-
-                int r = row, c = col;
-                //btn.setOnAction(e -> handleGridClick(r, c, btn));
-
-                grid[r][c] = btn;
-                gridPane.add(grid[row][col], col, row);
+                topGrid[r][c] = btn;
+                gridPane.add(topGrid[row][col], col, row);
             }
         }
         return gridPane;
     }
 
     private void handleAttackPhaseGridClick(int row, int col, Button clickedButton) {
-        player.attack(row, col, player2);
+        Button btn = topGrid[row][col];
+        if(player.attack(row, col, player2)){
+            if(Objects.equals(player2.bottomBoard.grid[row][col],"Hit")){
+                btn.setStyle("-fx-background-color: red;");
+            }
+            else{
+                btn.setStyle("-fx-background-color: yellow;");
+            }
+        }
     }
 
     public void reloadWithNewComponents() {
         this.getChildren().clear();
 
         Label newLabel = new Label("");
-        GridPane newGrid = createBottomGameBoard();
+        GridPane topGameBoard = createAttackPhaseTopGameBoard();
+        GridPane bottomGameBoard = createAttackPhaseBottomGameBoard();
 
-        this.getChildren().addAll(newLabel, newGrid);
+        this.getChildren().addAll(newLabel, topGameBoard, bottomGameBoard);
     }
 }

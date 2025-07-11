@@ -83,10 +83,10 @@ public class Board {
         }
     }
     public boolean coordInBounds(int row, int col){
-        if (row < 0 || col < 0) {
+        if (row < 1 || col < 1) {
             return false;
         }
-        else if (row >= this.grid.length+1 || col>=this.grid[0].length+1){
+        else if (row >= this.grid.length || col>=this.grid[0].length){
             return false;
         }
         return true;

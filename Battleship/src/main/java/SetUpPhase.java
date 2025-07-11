@@ -28,7 +28,7 @@ public class SetUpPhase extends Phase {
             for (Ship ship : ships) {
                 do {
                     Input playerInput;
-                    if (!player.isComputer) {
+                    if (!player.isComputer()) {
                         playerInput = this.getUserInput(System.in);
                     } else {
                         playerInput = this.getAiInput();
@@ -63,10 +63,31 @@ public class SetUpPhase extends Phase {
         char orientation = Math.random() < 0.5 ? 'v' : 'h';
         return new Input(rowNum, colNum, orientation);
     }
-    public List<Map<String, Integer>> getShipPlacementCoords(Input input, Player player, Ship ship){
+
+    public List<Map<String, Integer>> getShipPlacementCoords(Input input, Player player, Ship ship) {
         int row = input.getRowNum();
         int col = input.getColNum();
         char orientation = input.getOrientation();
         return player.bottomBoard.calcShipPlacementCoordinates(row, col, ship.size, orientation);
+    }
+
+    public void setAIPlayerShips(AIPlayer player) {
+        List<Map<String, Integer>> shipCoordinates;
+        boolean placemenIsValid;
+
+        for (Ship ship : ships) {
+            do {
+                Input playerInput;
+                playerInput = this.getAiInput();
+                shipCoordinates = getShipPlacementCoords(playerInput, player, ship);
+                placemenIsValid = player.bottomBoard.validateShipPlacement(shipCoordinates);
+
+                if (!placemenIsValid && !player.isComputer) {
+                    System.out.println("Invalid input. Try again.");
+                }
+            } while (!placemenIsValid);
+            ship.setCoordinates(shipCoordinates);
+            player.placeShip(ship);
+        }
     }
 }
