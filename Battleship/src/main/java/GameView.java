@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -183,12 +184,14 @@ class GameView extends VBox {
 
     private void handleAttackPhaseGridClick(int row, int col, Button clickedButton) {
         Button btn = topGrid[row][col];
-        if(player.attack(row, col, player2)){
-            if(Objects.equals(player2.bottomBoard.grid[row][col],"Hit")){
-                btn.setStyle("-fx-background-color: red;");
+        boolean attack = player.attack(row, col, player2);
+        if(attack){
+            System.out.println("row:" + row + " col:" + col + " cell-value:" + player2.bottomBoard.grid[row][col]);
+            if(Objects.equals(player2.bottomBoard.grid[row][col],null) || Objects.equals(player2.bottomBoard.grid[row][col],"Miss")){
+                btn.setStyle("-fx-background-color: yellow;");
             }
             else{
-                btn.setStyle("-fx-background-color: yellow;");
+                btn.setStyle("-fx-background-color: red;");
             }
         }
     }

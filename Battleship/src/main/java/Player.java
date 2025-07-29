@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class Player {
     private static int nextId = 0;
@@ -25,25 +22,34 @@ public abstract class Player {
         this.shipsAlive.put(ship.name, ship);
     }
     public boolean attack(int col, int row, Player targetPlayer){
-        if(col < 0 || col > 9){
+        if(col < 1 || col > 10){
+            System.out.println("This coordinate is out of bounds");
             return false;
         }
-        else if(row < 0 || row > 9){
+        else if(row < 1 || row > 10){
+            System.out.println("This coordinate is out of bounds");
             return false;
         }
         else if(Objects.equals(targetPlayer.bottomBoard.grid[row][col],"Miss"))
         {
+            System.out.println("This coordinate has already been attacked");
             return false;
         }
         else if(Objects.equals(targetPlayer.bottomBoard.grid[row][col],"Hit"))
         {
+            System.out.println("This coordinate has already been attacked");
             return false;
         }
         else if(Objects.equals(targetPlayer.bottomBoard.grid[row][col],null)) {
+            System.out.println("Miss!");
             targetPlayer.bottomBoard.grid[row][col] = "Miss";
+            System.out.println(Arrays.deepToString(targetPlayer.bottomBoard.grid));
+
         }
         else {
+            System.out.println("Hit!");
             targetPlayer.bottomBoard.grid[row][col] = "Hit";
+            System.out.println(Arrays.deepToString(targetPlayer.bottomBoard.grid));
         }
         return true;
     }
